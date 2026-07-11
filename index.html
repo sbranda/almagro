@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Club Almagro</title>
+<meta name="description" content="Sitio informativo no oficial del Club Almagro: historia, estadio, plantel y resultados.">
+<meta name="theme-color" content="#0a1220">
+
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Almagro">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@400;600;700;900&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a1220; --bg-alt:#101c33; --paper:#f1ecdd;
+    --azul-tricolor:#1d4d8f; --azul-bright:#4a94e8; --azul-deep:#0d2547;
+    --brass:#c9a04a; --line:rgba(var(--paper-rgb),0.16);
+    --bg-rgb:10,18,32; --paper-rgb:241,236,221; --azul-bright-rgb:74,148,232;
+    --brass-rgb:201,160,74; --rust-rgb:156,74,43; --rust-text:#d98a6a;
+  }
+  [data-theme="light"]{
+    --bg:#eef1f6; --bg-alt:#e2e7ef; --paper:#0f1626;
+    --azul-tricolor:#1c4787; --azul-bright:#155aa3; --azul-deep:#dbe4f2;
+    --brass:#8a6414; --line:rgba(15,22,38,0.14);
+    --bg-rgb:238,241,246; --paper-rgb:15,22,38; --azul-bright-rgb:21,89,163;
+    --brass-rgb:138,100,20;
+  }
+  [data-theme="light"]{ --azul-bright:#155aa3; }
+  [data-theme="light"] img.photo{filter:none;}
+  [data-theme="light"] .station-sign{box-shadow:0 0 0 6px var(--azul-tricolor), 0 20px 50px rgba(0,0,0,0.15);}
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--bg); color:var(--paper); font-family:'Source Serif 4', Georgia, serif; line-height:1.6; -webkit-font-smoothing:antialiased;}
+  h1,h2,h3,.disp{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; letter-spacing:0.02em;}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.02em;}
+  button{cursor:pointer; border:none; font-family:'IBM Plex Mono', monospace; background:transparent; color:inherit;}
+  :focus-visible{outline:3px solid var(--brass); outline-offset:2px;}
+  p{opacity:0.92;}
+
+  header.hero{
+    min-height:78vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; padding:3rem 1.25rem; position:relative;
+    background-image:linear-gradient(rgba(var(--bg-rgb),0.75), rgba(var(--bg-rgb),0.93)),
+      url('https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%2C%20del%20Club%20Almagro..jpg');
+    background-size:cover; background-position:center;
+  }
+  header.hero img.crest{width:120px; height:120px; margin-bottom:1.4rem; filter:drop-shadow(0 6px 18px rgba(0,0,0,0.5));}
+  .station-sign{
+    background:var(--azul-tricolor); border:3px solid var(--paper);
+    box-shadow:0 0 0 6px var(--azul-deep), 0 20px 50px rgba(0,0,0,0.4);
+    padding:0.8rem 2rem; display:inline-block;
+  }
+  .station-sign span{font-size:clamp(2rem,6vw,4rem); font-weight:900; color:var(--paper); display:block; line-height:0.95;}
+  .hero-sub{margin-top:1.5rem; max-width:36ch; font-size:clamp(1rem,2vw,1.2rem);}
+  .hero-meta{margin-top:0.5rem; color:var(--azul-bright); font-size:0.9rem;}
+
+  nav.tabs{
+    display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:0.3rem;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    padding:0.6rem 1rem; position:sticky; top:0; background:var(--bg); z-index:10;
+  }
+  nav.tabs img{width:34px; height:34px; margin-right:0.6rem;}
+  .tabbtn{padding:0.5rem 0.9rem; font-size:0.85rem; text-transform:uppercase; border-bottom:2px solid transparent; transition:color 0.2s, border-color 0.2s;}
+  .tabbtn:hover{color:var(--azul-bright);}
+  .tabbtn.active{color:var(--azul-bright); border-bottom-color:var(--azul-bright);}
+
+  main{max-width:900px; margin:0 auto; padding:3.5rem 1.5rem;}
+  section{display:none;}
+  section.active{display:block;}
+  .eyebrow{color:var(--azul-bright); font-size:0.8rem; text-transform:uppercase; margin-bottom:0.6rem;}
+  h2{font-size:clamp(1.7rem,4vw,2.4rem); margin:0 0 1.2rem;}
+
+  /* timeline */
+  .efemeride{
+    border:1px solid var(--brass); background:rgba(var(--brass-rgb),0.08);
+    padding:1.1rem 1.3rem; margin-bottom:1.8rem;
+  }
+  .efemeride .tag{font-size:0.7rem; color:var(--brass); text-transform:uppercase; letter-spacing:0.08em;}
+  .efemeride .titulo{font-family:'Big Shoulders Display', sans-serif; font-size:1.2rem; margin-top:0.3rem;}
+  .efemeride .texto{font-size:0.9rem; opacity:0.9; margin-top:0.3rem;}
+  .efemeride.proxima{border-color:rgba(var(--paper-rgb),0.25); background:transparent;}
+  .efemeride.proxima .tag{color:var(--azul-bright);}
+  .timeline{position:relative; padding-left:2.2rem; margin-top:2rem;}
+  .timeline::before{content:""; position:absolute; left:0.5rem; top:0.3rem; bottom:0.3rem; width:6px;
+    background:repeating-linear-gradient(180deg, var(--brass) 0 4px, transparent 4px 16px);}
+  .stop{position:relative; padding-bottom:1.4rem;}
+  .dot{position:absolute; left:-2.2rem; top:0.35rem; width:1.2rem; height:1.2rem; border-radius:50%; background:var(--azul-tricolor); border:3px solid var(--paper);}
+  .stop.open .dot{background:var(--azul-bright);}
+  .stopbtn{width:100%; text-align:left; padding:0.5rem 0.7rem;}
+  .stopbtn:hover{background:rgba(var(--azul-bright-rgb),0.08);}
+  .stopbtn .yr{color:var(--brass); font-size:0.95rem; display:block;}
+  .stopbtn .ti{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; font-size:1.25rem;}
+  .stop .body{display:none; padding:0 0.7rem; margin:0.4rem 0 0;}
+  .stop.open .body{display:block;}
+
+  /* colors */
+  .colors{display:flex; gap:1rem; flex-wrap:wrap; margin:1.8rem 0;}
+  .swatch{flex:1 1 150px; border:1px solid var(--line); padding:1rem; text-align:center;}
+  .swatch .chip{height:50px; margin-bottom:0.6rem;}
+  .swatch .yr{font-size:0.78rem; color:var(--azul-bright);}
+  .swatch p{font-size:0.85rem; margin:0.3rem 0 0; opacity:0.75;}
+  .nicknames{display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1rem;}
+  .nickname{font-size:0.85rem; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.35rem 0.8rem;}
+
+  /* stadium */
+  .gallery{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:0.8rem; margin:1.6rem 0;}
+  .gallery img{width:100%; height:170px; object-fit:cover; border:1px solid var(--line); filter:saturate(0.9);}
+  .stat-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:1.4rem 0; margin:1.6rem 0;}
+  .stat-num{font-family:'Big Shoulders Display', sans-serif; font-size:2.1rem; font-weight:700;}
+  .stat-label{font-size:0.72rem; color:var(--azul-bright);}
+
+  /* historic squads */
+  .squadcard{border:1px solid var(--line); margin-bottom:0.6rem;}
+  .squadbtn{width:100%; padding:1rem 1.2rem; display:flex; justify-content:space-between; align-items:center; gap:1rem;}
+  .squadbtn:hover{background:rgba(var(--azul-bright-rgb),0.08);}
+  .squadbtn .yr{color:var(--brass); font-size:0.9rem; display:block;}
+  .squadbtn .ti{font-family:'Big Shoulders Display', sans-serif; text-transform:uppercase; font-size:1.25rem;}
+  .squadbtn .plus{color:var(--azul-bright); font-size:1.2rem;}
+  .squadbody{display:none; padding:0 1.2rem 1.2rem;}
+  .squadcard.open .squadbody{display:block;}
+  .line-label{font-size:0.72rem; color:var(--azul-bright); text-transform:uppercase;}
+
+  /* squad grid */
+  .filters{display:flex; flex-wrap:wrap; gap:0.5rem; margin-bottom:1.6rem;}
+  #jugador-search{
+    width:100%; box-sizing:border-box; margin:1.4rem 0 0.6rem;
+    background:transparent; border:1px solid var(--azul-tricolor); color:var(--paper);
+    padding:0.7rem 0.9rem; font-size:0.9rem;
+  }
+  #jugador-search::placeholder{color:rgba(var(--paper-rgb),0.45);}
+  #jugador-search:focus{outline:none; border-color:var(--azul-bright);}
+  .jugador-hit{
+    border:1px solid var(--line); padding:0.7rem 0.9rem; margin-bottom:0.5rem;
+    display:flex; justify-content:space-between; align-items:center; gap:0.8rem; flex-wrap:wrap;
+  }
+  .bg-categoria{font-size:0.7rem; color:var(--brass); text-transform:uppercase; margin:1.2rem 0 0.5rem; font-family:'IBM Plex Mono', monospace;}
+  .bg-categoria:first-child{margin-top:0;}
+  .bg-hit{
+    border:1px solid var(--line); padding:0.8rem 1rem; margin-bottom:0.5rem; cursor:pointer;
+  }
+  .bg-hit:hover{border-color:var(--azul-bright); background:rgba(var(--azul-bright-rgb),0.06);}
+  .bg-hit .titulo{font-weight:600;}
+  .bg-hit .snippet{font-size:0.82rem; opacity:0.75; margin-top:0.25rem;}
+  .jugador-hit .nombre{font-weight:600;}
+  .jugador-hit .contexto{font-size:0.78rem; color:var(--azul-bright); font-family:'IBM Plex Mono', monospace;}
+  .jugador-sin{font-size:0.85rem; opacity:0.6; margin-bottom:1rem;}
+  .destacado-card{border:1px solid var(--line); padding:0.9rem 1.1rem; margin-bottom:0.6rem;}
+  .destacado-card .nombre{font-weight:600; font-size:1rem;}
+  .destacado-card .periodo{font-size:0.72rem; color:var(--brass); font-family:'IBM Plex Mono', monospace; text-transform:uppercase; margin-top:0.15rem;}
+  .destacado-card .dato{font-size:0.88rem; opacity:0.85; margin-top:0.4rem;}
+  .trivia-card{border:1px solid var(--azul-tricolor); padding:1.2rem; margin-top:1rem;}
+  .trivia-score{font-size:0.75rem; color:var(--brass); margin-bottom:0.8rem;}
+  .trivia-pregunta{font-size:1.05rem; margin-bottom:1rem;}
+  .trivia-opciones{display:flex; flex-direction:column; gap:0.5rem;}
+  .trivia-opcion{
+    background:transparent; border:1px solid rgba(var(--paper-rgb),0.25); color:var(--paper);
+    padding:0.7rem 0.9rem; text-align:left; font-size:0.9rem; cursor:pointer; border-radius:2px;
+  }
+  .trivia-opcion:hover:not(:disabled){border-color:var(--azul-bright);}
+  .trivia-opcion.correcta{background:rgba(var(--azul-bright-rgb),0.2); border-color:var(--azul-bright); color:var(--azul-bright);}
+  .trivia-opcion.incorrecta{background:rgba(var(--rust-rgb),0.2); border-color:var(--rust-text); color:var(--rust-text);}
+  .trivia-opcion:disabled{cursor:default;}
+  .trivia-siguiente{margin-top:1rem; background:var(--azul-tricolor); color:var(--paper); border:none; padding:0.6rem 1rem; font-family:'IBM Plex Mono', monospace; font-size:0.82rem; cursor:pointer;}
+  .filterbtn{padding:0.5rem 1rem; font-size:0.8rem; border:1px solid var(--azul-tricolor); color:var(--azul-bright);}
+  .filterbtn.active{background:var(--azul-tricolor); color:var(--paper);}
+  .squadgrid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:0.7rem;}
+  .player{border:1px solid var(--line); padding:0.9rem;}
+  .player .name{font-weight:600;}
+  .player .detail{font-size:0.78rem; color:var(--azul-bright); margin-top:0.2rem;}
+
+  /* results */
+  .standing{background:var(--azul-deep); border:1px solid var(--azul-tricolor); padding:1rem 1.4rem; margin-bottom:1.6rem;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:0.6rem;}
+  .standing .pos{color:var(--brass);}
+  .proximo{border:1px solid var(--brass); background:rgba(var(--brass-rgb),0.08); padding:1rem 1.2rem; margin-bottom:1.2rem;}
+  .racha{margin-bottom:1.4rem;}
+  .compartir-btn{
+    display:inline-flex; align-items:center; gap:0.5rem; margin-bottom:0.6rem;
+    background:var(--azul-tricolor); color:var(--paper); border:none;
+    padding:0.6rem 1rem; font-family:'IBM Plex Mono', monospace; font-size:0.82rem; cursor:pointer;
+  }
+  .compartir-btn:hover{background:var(--azul-bright); color:var(--bg);}
+  #compartir-wrap{display:flex; gap:0.6rem; flex-wrap:wrap; margin-bottom:0.8rem;}
+  .rivales{margin-top:1.8rem;}
+  .rivales .label{font-size:0.72rem; color:var(--azul-bright); text-transform:uppercase; margin-bottom:0.6rem;}
+  .rival-card{
+    display:flex; align-items:center; justify-content:space-between; gap:0.8rem; flex-wrap:wrap;
+    border:1px solid var(--line); padding:0.8rem 1rem; margin-bottom:0.5rem;
+  }
+  .rival-card .info .name{font-weight:600;}
+  .rival-card .info .apodo{font-size:0.75rem; color:var(--brass); cursor:help; margin-top:0.1rem;}
+  .rival-card .info .when{font-size:0.78rem; color:rgba(var(--paper-rgb),0.65); margin-top:0.15rem;}
+  .rival-btn{
+    font-size:0.75rem; text-decoration:none; color:var(--azul-bright);
+    border:1px solid var(--azul-tricolor); padding:0.4rem 0.8rem; white-space:nowrap;
+    font-family:'IBM Plex Mono', monospace;
+  }
+  .rival-btn:hover{background:rgba(var(--azul-bright-rgb),0.12);}
+  .racha .label{font-size:0.72rem; color:var(--azul-bright); text-transform:uppercase; margin-bottom:0.5rem;}
+  .racha-icons{display:flex; gap:0.5rem;}
+  .racha-icon{
+    width:2.1rem; height:2.1rem; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Big Shoulders Display', sans-serif; font-weight:700; font-size:1rem;
+    color:var(--bg); cursor:default;
+  }
+  .racha-icon.g{background:var(--azul-bright);}
+  .racha-icon.e{background:var(--brass);}
+  .racha-icon.p{background:var(--rust-text); color:var(--negro,#111);}
+  .proximo .tag{font-size:0.72rem; color:var(--brass); text-transform:uppercase;}
+  .proximo .match{font-family:'Big Shoulders Display', sans-serif; font-size:1.3rem; margin-top:0.3rem;}
+  .countdown-hero{margin-top:1rem; font-size:0.85rem; color:var(--paper); opacity:0.9; min-height:1.2em;}
+  .hero-proximo{
+    margin-top:1.6rem;
+    border:1px solid rgba(var(--paper-rgb),0.3);
+    background:rgba(var(--bg-rgb),0.55);
+    padding:1rem 1.6rem;
+    display:inline-flex;
+    flex-direction:column;
+    align-items:center;
+    gap:0.3rem;
+  }
+  .hero-proximo .tag{font-size:0.68rem; color:var(--azul-bright); text-transform:uppercase; letter-spacing:0.1em;}
+  .hero-proximo .match{font-family:'Big Shoulders Display', sans-serif; font-size:1.5rem; text-transform:uppercase;}
+  .hero-proximo .match-row{display:flex; align-items:center; gap:0.7rem;}
+  .hero-proximo .cond{color:var(--brass); font-size:0.78rem;}
+  .hero-proximo .when{font-size:0.85rem; opacity:0.85;}
+  .countdown-box{display:flex; gap:0.6rem; margin-top:0.8rem; flex-wrap:wrap;}
+  .clima-box{
+    margin-top:0.8rem; display:flex; align-items:center; gap:0.5rem;
+    font-size:0.85rem; opacity:0.9;
+  }
+  .clima-icon{font-size:1.3rem;}
+  .prediccion{margin-top:1rem; padding-top:0.9rem; border-top:1px dashed rgba(var(--paper-rgb),0.2);}
+  .prediccion .label{font-size:0.72rem; color:var(--azul-bright); text-transform:uppercase; margin-bottom:0.5rem;}
+  .prediccion-form{display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap;}
+  .prediccion-form input{
+    width:3rem; text-align:center; background:var(--bg); color:var(--paper);
+    border:1px solid var(--azul-tricolor); padding:0.4rem; font-family:'IBM Plex Mono', monospace; font-size:1rem;
+  }
+  .prediccion-form span{color:var(--brass); font-weight:700;}
+  .prediccion-form button{
+    background:var(--azul-tricolor); color:var(--paper); border:none; padding:0.5rem 0.9rem;
+    font-family:'IBM Plex Mono', monospace; font-size:0.78rem; cursor:pointer;
+  }
+  .prediccion-guardada{font-size:0.85rem;}
+  .prediccion-resultado{margin-top:0.5rem; font-size:0.85rem; padding:0.6rem 0.8rem;}
+  .prediccion-resultado.exacto{background:rgba(var(--azul-bright-rgb),0.15); color:var(--azul-bright);}
+  .prediccion-resultado.parcial{background:rgba(var(--brass-rgb),0.15); color:var(--brass);}
+  .prediccion-resultado.fallo{background:rgba(var(--rust-rgb),0.15); color:var(--rust-text);}
+  .countdown-box .unit{border:1px solid rgba(var(--paper-rgb),0.25); padding:0.5rem 0.7rem; text-align:center; min-width:58px;}
+  .countdown-box .unit .num{font-family:'Big Shoulders Display', sans-serif; font-size:1.5rem; font-weight:700; line-height:1;}
+  .countdown-box .unit .lbl{font-size:0.65rem; color:var(--azul-bright); text-transform:uppercase; margin-top:0.2rem;}
+  .rrow{display:flex; align-items:center; gap:1rem; padding:0.7rem 0.5rem; border-bottom:1px solid rgba(var(--paper-rgb),0.1);}
+  .rrow:hover{background:rgba(var(--azul-bright-rgb),0.06);}
+  .rrow .date{font-size:0.75rem; color:rgba(var(--paper-rgb),0.5); width:48px;}
+  .rrow .cond{font-size:0.7rem; color:var(--brass); width:18px;}
+  .rrow .rival{flex:1;}
+  .rrow .score{background:var(--azul-bright); color:var(--bg); padding:0.2rem 0.6rem; font-weight:600; min-width:44px; text-align:center;}
+  .rrow .scorers{font-size:0.8rem; opacity:0.65; flex:1 1 160px;}
+
+  .visit-card{background:var(--azul-deep); border:1px solid var(--azul-tricolor); padding:1.8rem;}
+  .mapa-link{display:inline-block; margin-top:0.7rem; font-size:0.8rem;}
+  .standings-table{width:100%; border-collapse:collapse; font-size:0.82rem;}
+  .standings-table th{font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--azul-bright); text-transform:uppercase; text-align:center; padding:0.4rem 0.3rem; border-bottom:1px solid var(--line);}
+  .standings-table th:first-child, .standings-table td:first-child{text-align:left; padding-left:0;}
+  .standings-table td{text-align:center; padding:0.45rem 0.3rem; border-bottom:1px solid rgba(var(--paper-rgb),0.08);}
+  .standings-table tr.me{background:rgba(var(--azul-bright-rgb),0.15);}
+  .standings-table tr.me td{color:var(--paper); font-weight:600;}
+  .comparador{margin-top:2.4rem; border-top:1px solid var(--line); padding-top:1.6rem;}
+  .comparador-selects{display:flex; align-items:center; gap:0.8rem; margin-top:0.8rem; flex-wrap:wrap;}
+  .comparador-selects select{
+    flex:1 1 160px; background:var(--bg); color:var(--paper); border:1px solid var(--azul-tricolor);
+    padding:0.6rem 0.7rem; font-size:0.85rem; font-family:'IBM Plex Mono', monospace;
+  }
+  .comparador-vs{color:var(--brass); font-size:0.8rem;}
+  .comp-table{width:100%; border-collapse:collapse; margin-top:1.2rem; font-size:0.85rem;}
+  .comp-table th{font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--azul-bright); text-transform:uppercase; padding:0.4rem; border-bottom:1px solid var(--line); text-align:center;}
+  .comp-table td{padding:0.5rem 0.4rem; text-align:center; border-bottom:1px solid rgba(var(--paper-rgb),0.08);}
+  .comp-table td.stat-label{text-align:left; color:var(--azul-bright); font-family:'IBM Plex Mono', monospace; font-size:0.72rem; text-transform:uppercase;}
+  .comp-table .team-header{display:flex; flex-direction:column; align-items:center; gap:0.4rem;}
+  .comp-table .team-header .name{font-size:0.78rem; max-width:110px;}
+  .comp-table td.better{color:var(--azul-bright); font-weight:700;}
+  .standings-table .team-cell{display:flex; align-items:center; gap:0.4rem; text-align:left;}
+  .visit-card .label{color:var(--brass); font-size:0.78rem; text-transform:uppercase; margin-top:1rem;}
+
+  footer{text-align:center; padding:2.5rem 1.5rem 3.5rem; opacity:0.5; font-size:0.75rem;}
+
+  .install-toast{
+    position:fixed; bottom:1rem; left:50%; transform:translateX(-50%);
+    background:var(--azul-tricolor); color:var(--paper); padding:0.8rem 1.2rem;
+    border:1px solid var(--paper); display:none; align-items:center; gap:0.8rem; z-index:50; font-size:0.85rem;
+  }
+  .install-toast.show{display:flex;}
+  .install-toast button{background:var(--paper); color:var(--azul-deep); padding:0.4rem 0.8rem; font-weight:600;}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <img class="crest" src="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg" alt="Escudo del Club Almagro">
+  <div class="station-sign"><span>Club<br>Almagro</span></div>
+  <p class="hero-sub">El Tricolor de José Ingenieros. Un club de barrio porteño con sede en Almagro y cancha en Tres de Febrero.</p>
+  <p class="hero-meta mono">FUNDADO 6 · 01 · 1911</p>
+  <div id="hero-proximo" class="hero-proximo"></div>
+  <div id="countdown-hero" class="countdown-hero"></div>
+</header>
+
+<nav class="tabs" id="tabs">
+  <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg" alt="Escudo">
+  <button class="tabbtn mono active" data-tab="historia">Historia</button>
+  <button class="tabbtn mono" data-tab="identidad">Identidad</button>
+  <button class="tabbtn mono" data-tab="estadio">Estadio</button>
+  <button class="tabbtn mono" data-tab="planteles">Planteles históricos</button>
+  <button class="tabbtn mono" data-tab="plantel">Plantel actual</button>
+  <button class="tabbtn mono" data-tab="resultados">Resultados</button>
+  <button class="tabbtn mono" data-tab="visitanos">Visitanos</button>
+  <button class="mono" id="buscar-global-btn" title="Buscar en toda la app" style="background:transparent; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.5rem 0.8rem; font-size:0.9rem; cursor:pointer;">🔍</button>
+  <button class="mono" id="theme-toggle-btn" title="Cambiar tema claro/oscuro" style="background:transparent; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.5rem 0.8rem; font-size:0.9rem; cursor:pointer;">🌙</button>
+  <button class="mono" id="font-menos-btn" title="Achicar letra" style="background:transparent; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.5rem 0.7rem; font-size:0.8rem; cursor:pointer;">A-</button>
+  <button class="mono" id="font-mas-btn" title="Agrandar letra" style="background:transparent; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.5rem 0.7rem; font-size:1.05rem; cursor:pointer;">A+</button>
+</nav>
+
+<div id="buscar-global-overlay" style="display:none; position:fixed; inset:0; background:rgba(10,18,32,0.97); z-index:100; overflow-y:auto;">
+  <div style="max-width:700px; margin:0 auto; padding:1.5rem;">
+    <div style="display:flex; align-items:center; gap:0.6rem;">
+      <input type="text" id="buscar-global-input" class="mono" placeholder="Buscar jugadores, rivales, historia, efemérides…" autocomplete="off"
+        style="flex:1; background:transparent; border:1px solid var(--azul-tricolor); color:var(--paper); padding:0.8rem 1rem; font-size:1rem;">
+      <button id="buscar-global-cerrar" class="mono" style="background:transparent; border:1px solid rgba(241,236,221,0.3); color:var(--paper); padding:0.8rem 1rem; cursor:pointer;">✕</button>
+    </div>
+    <div id="buscar-global-resultados" style="margin-top:1.5rem;"></div>
+  </div>
+</div>
+
+<main>
+
+  <section id="tab-historia" class="active">
+    <div id="efemeride-wrap"></div>
+    <div class="eyebrow mono">Línea de tiempo</div>
+    <h2 class="disp">De la fusión de tres clubes al Tricolor de José Ingenieros</h2>
+    <p>Tocá cada estación para ver su historia.</p>
+    <div class="timeline" id="timeline"></div>
+
+    <div class="eyebrow mono" style="margin-top:2.2rem;">Fotos de archivo</div>
+    <div class="gallery">
+      <div>
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%2C%20del%20Club%20Almagro..jpg" alt="Estadio Tres de Febrero del Club Almagro" loading="lazy">
+        <p class="mono" style="font-size:0.72rem; opacity:0.55; margin-top:0.4rem;">El Estadio Tres de Febrero, casa del Tricolor desde 1956</p>
+      </div>
+      <div>
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%2C%20vista%20oriental..jpg" alt="Vista oriental del Estadio Tres de Febrero" loading="lazy">
+        <p class="mono" style="font-size:0.72rem; opacity:0.55; margin-top:0.4rem;">Vista oriental del estadio, en José Ingenieros</p>
+      </div>
+    </div>
+
+    <div class="eyebrow mono" style="margin-top:2.2rem;">El clásico</div>
+    <h2 class="disp" style="font-size:1.4rem;">Clásico de Tres de Febrero — vs. Estudiantes</h2>
+    <p>Almagro y Estudiantes comparten el Partido de Tres de Febrero, con estadios a poco más de un kilómetro y medio de distancia: uno de los clásicos más antiguos e intensos del ascenso argentino.</p>
+
+    <div class="stat-row">
+      <div><div class="stat-num">108</div><div class="stat-label mono">Partidos oficiales jugados</div></div>
+      <div><div class="stat-num">35</div><div class="stat-label mono">Victorias del Tricolor</div></div>
+      <div><div class="stat-num">32</div><div class="stat-label mono">Victorias del Pincha</div></div>
+      <div><div class="stat-num">41</div><div class="stat-label mono">Empates</div></div>
+    </div>
+
+    <div class="destacado-card">
+      <div class="nombre">Ventaja histórica</div>
+      <div class="periodo mono">108 partidos disputados</div>
+      <div class="dato">El historial favorece a Almagro por apenas 3 partidos de diferencia sobre Estudiantes, en uno de los clásicos más parejos del ascenso.</div>
+    </div>
+    <div class="destacado-card">
+      <div class="nombre">El último Clásico</div>
+      <div class="periodo mono">Primera Nacional 2024</div>
+      <div class="dato">El último cruce oficial entre ambos terminó empatado 1 a 1.</div>
+    </div>
+
+    <div class="eyebrow mono" style="margin-top:2.2rem;">Trivia</div>
+    <h2 class="disp" style="font-size:1.4rem;">¿Cuánto sabés de Almagro?</h2>
+    <div id="trivia-wrap"></div>
+  </section>
+
+  <section id="tab-identidad">
+    <div class="eyebrow mono">Identidad</div>
+    <h2 class="disp">Un tricolor con historia propia</h2>
+    <p>Los colores del club cambiaron antes de fijarse definitivamente en el azul, blanco y negro.</p>
+    <div class="colors">
+      <div class="swatch">
+        <div class="chip" style="background:linear-gradient(90deg,#ffffff 50%, #1f7a3d 50%);"></div>
+        <span class="yr mono">1913</span>
+        <p>Camiseta blanca y verde a rayas verticales, del recién fundado Almagro Football Club.</p>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:linear-gradient(90deg,#1d4d8f 33%, #f1ecdd 33%, #f1ecdd 66%, #111 66%);"></div>
+        <span class="yr mono">16 · 10 · 1916</span>
+        <p>Refundación del club y adopción del azul, blanco y negro. Nace el apodo "Tricolor".</p>
+      </div>
+      <div class="swatch">
+        <div class="chip" style="background:repeating-linear-gradient(90deg, #1d4d8f 0 8px, #111 8px 12px, #f1ecdd 12px 14px);"></div>
+        <span class="yr mono">Hoy</span>
+        <p>Camiseta con bastones verticales azul y negro, separados por finas franjas blancas.</p>
+      </div>
+    </div>
+    <p>La hinchada de Almagro se conoce como "La Banda Tricolor".</p>
+    <div class="nicknames" id="nicknames"></div>
+
+    <div class="eyebrow mono" style="margin-top:2rem;">Amistades y rivalidades</div>
+    <p>Además del clásico con Estudiantes, Almagro mantiene una histórica rivalidad con Deportivo Morón, Chacarita Juniors y Nueva Chicago. Del otro lado, tiene lazos de amistad con Defensores Unidos y con Grêmio de Porto Alegre (Brasil), con quien comparte estilo y colores de camiseta.</p>
+  </section>
+
+  <section id="tab-estadio">
+    <div class="eyebrow mono">La casa del Tricolor</div>
+    <h2 class="disp">Estadio Tres de Febrero</h2>
+    <p>Ubicado en José Ingenieros (Partido de Tres de Febrero, Provincia de Buenos Aires), a pocas cuadras del Acceso Oeste y la Av. General Paz. Inaugurado el 7 de abril de 1956, con una derrota 3-2 ante Dock Sud.</p>
+    <div class="gallery">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%2C%20del%20Club%20Almagro..jpg" alt="Estadio Tres de Febrero" loading="lazy">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%2C%20vista%20oriental..jpg" alt="Vista oriental del Estadio Tres de Febrero" loading="lazy">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Estadio%20Tres%20de%20Febrero%20popular.jpg" alt="Popular del Estadio Tres de Febrero" loading="lazy">
+    </div>
+    <div class="stat-row">
+      <div><div class="stat-num">1956</div><div class="stat-label mono">Año de inauguración</div></div>
+      <div><div class="stat-num">~19.000</div><div class="stat-label mono">Capacidad (remodelación de 2000)</div></div>
+      <div><div class="stat-num">2000</div><div class="stat-label mono">Año de la última gran remodelación</div></div>
+    </div>
+    <p>La sede social del club, en cambio, permanece en el barrio de Almagro (Medrano 522), a más de 10 km del estadio — una particularidad que comparten pocos clubes del ascenso argentino.</p>
+  </section>
+
+  <section id="tab-planteles">
+    <div class="eyebrow mono">1911 — hoy</div>
+    <h2 class="disp">Planteles históricos</h2>
+    <p>No existen planillas completas de todas las temporadas del club, sobre todo de la época amateur. Estos son los momentos mejor documentados de la historia de Almagro. Tocá cada uno para ver los detalles.</p>
+
+    <input type="text" id="jugador-search" class="mono" placeholder="Buscar jugador por nombre…" autocomplete="off">
+    <div id="jugador-resultados"></div>
+
+    <div id="historic-squads"></div>
+    <p class="mono" style="font-size:0.78rem; opacity:0.55; margin-top:1.4rem;">Fuentes: Wikipedia, UACDRA, El Sitio de Almagro, Copa Argentina y ESPN.</p>
+
+    <div class="eyebrow mono" style="margin-top:2.4rem;">A través de las épocas</div>
+    <h2 class="disp" style="font-size:1.4rem;">Jugadores destacados</h2>
+    <div id="destacados-wrap"></div>
+
+    <div class="eyebrow mono" style="margin-top:2.4rem;">Conduciendo al Tricolor</div>
+    <h2 class="disp" style="font-size:1.4rem;">Cuerpo técnico</h2>
+    <div id="dts-wrap"></div>
+    <p class="mono" style="font-size:0.78rem; opacity:0.55; margin-top:1rem;">A diferencia de otros datos históricos del club, no hay una lista pública centralizada y confiable de todos los DT que dirigió Almagro a lo largo de su historia, así que por ahora solo mostramos el cuerpo técnico actual.</p>
+  </section>
+
+  <section id="tab-plantel">
+    <div class="eyebrow mono">Primera Nacional 2026</div>
+    <h2 class="disp">Plantel actual</h2>
+    <p>DT: <strong>Carlos Mayor</strong></p>
+    <div class="filters" id="filters"></div>
+    <div class="squadgrid" id="squadgrid"></div>
+  </section>
+
+  <section id="tab-resultados">
+    <div class="eyebrow mono">Últimas fechas</div>
+    <h2 class="disp">Resultados — Primera Nacional 2026</h2>
+    <div class="standing">
+      <span>Posición actual en su zona</span>
+      <span class="pos mono">10° puesto · 25 pts (tras la fecha 19)</span>
+    </div>
+    <div id="fechas-restantes-wrap"></div>
+    <div id="racha-wrap"></div>
+    <div id="racha-lv-wrap"></div>
+    <div id="proximo-wrap"></div>
+    <div id="rivales-wrap"></div>
+    <div id="compartir-wrap"></div>
+    <div id="results"></div>
+    <p class="mono" id="fuente-datos" style="font-size:0.78rem; opacity:0.55; margin-top:1rem;">Fuente: ESPN, fechas 14 a 19 del torneo (datos fijos).</p>
+
+    <button class="btn mono" id="toggle-standings" style="margin-top:1.6rem; border:1px solid var(--azul-tricolor); color:var(--azul-bright); padding:0.6rem 1rem;">
+      Ver tabla completa de la zona ▾
+    </button>
+    <div id="standings-wrap" style="display:none; margin-top:1rem;">
+      <div id="standings-table-wrap-B"></div>
+      <div id="standings-table-wrap-A" style="margin-top:2rem;"></div>
+
+      <div class="comparador">
+        <div class="eyebrow mono">Comparador rápido</div>
+        <div class="comparador-selects">
+          <select id="comp-equipo-a" class="mono"><option value="">Elegí un equipo…</option></select>
+          <span class="mono comparador-vs">vs</span>
+          <select id="comp-equipo-b" class="mono"><option value="">Elegí un equipo…</option></select>
+        </div>
+        <div id="comparador-resultado"></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tab-visitanos">
+    <div class="eyebrow mono">Cómo llegar</div>
+    <h2 class="disp">Visitanos</h2>
+    <div class="visit-card">
+      <h3 class="disp" style="font-size:1.2rem; margin:0 0 0.8rem;">Estadio Tres de Febrero</h3>
+      <p>Av. Marcelo T. de Alvear 2223, José Ingenieros (Villa Raffo)</p>
+      <p>Partido de Tres de Febrero, Provincia de Buenos Aires</p>
+      <p class="label mono">Cómo llegar</p>
+      <p>Colectivos: 53, 135, 161, 237, 386</p>
+      <p>Tren: líneas San Martín, Sarmiento y Urquiza (estaciones cercanas)</p>
+      <a class="mono mapa-link" href="https://www.google.com/maps/search/?api=1&query=Estadio+Tres+de+Febrero+Almagro+Jose+Ingenieros" target="_blank" rel="noopener noreferrer">Abrir en Google Maps ↗</a>
+    </div>
+
+    <div class="eyebrow mono" style="margin-top:2.4rem;">Sede social</div>
+    <div class="visit-card">
+      <h3 class="disp" style="font-size:1.2rem; margin:0 0 0.8rem;">Barrio de Almagro</h3>
+      <p>Medrano 522, Almagro, Ciudad Autónoma de Buenos Aires</p>
+      <p>La sede social —donde nació el club— está a más de 10 km del estadio, en el barrio que le da nombre a la institución.</p>
+      <a class="mono mapa-link" href="https://www.google.com/maps/search/?api=1&query=Medrano+522+Almagro+Buenos+Aires" target="_blank" rel="noopener noreferrer">Abrir en Google Maps ↗</a>
+    </div>
+
+    <div class="eyebrow mono" style="margin-top:2.4rem;">Mantenete al día</div>
+    <a href="https://almagro.club/" target="_blank" rel="noopener noreferrer" class="rival-btn" style="display:inline-block; margin-top:0.6rem;">📰 Sitio oficial del club ↗</a>
+    <p class="mono" style="font-size:0.72rem; opacity:0.5; margin-top:0.8rem;">Para trámites de socios y valores de cuotas, consultá siempre el sitio oficial, ya que esos datos cambian con frecuencia.</p>
+  </section>
+
+</main>
+
+<footer class="mono">
+  Sitio informativo no oficial sobre Club Almagro · José Ingenieros / Almagro, Buenos Aires<br>
+  Fotos e imágenes: Wikimedia Commons (CC BY-SA / dominio público)
+</footer>
+
+<div class="install-toast mono" id="installToast">
+  <span>Instalá Almagro en tu pantalla de inicio</span>
+  <button id="installBtn">Instalar</button>
+</div>
+
+<script>
+// ---------- DATA ----------
+// Hitos con fecha exacta (día/mes) documentada, para el widget "Un día como hoy".
+// Son pocos porque la mayoría de la historia amateur del club no tiene fecha
+// exacta registrada en fuentes confiables — no es una lista completa.
+const EFEMERIDES = [
+  { dia: 6, mes: 1, anio: 1911, texto: "Un grupo de jóvenes funda el Club Almagro, tras la fusión de los equipos Jubile, San Martín Juniors y Lezica." },
+  { dia: 16, mes: 10, anio: 1916, texto: "Se reconstituye definitivamente el Club Almagro y se adoptan los colores azul, blanco y negro: nace el apodo \"Tricolor\"." },
+  { dia: 7, mes: 4, anio: 1956, texto: "Se inaugura el Estadio Tres de Febrero en José Ingenieros, con una derrota 3-2 ante Dock Sud." },
+  { dia: 23, mes: 7, anio: 2000, texto: "Almagro vuelve a Primera División tras 63 años, al eliminar a Instituto de Córdoba en la promoción: nace el \"Día del Hincha Tricolor\"." },
+  { dia: 13, mes: 8, anio: 2019, texto: "Almagro elimina a Boca Juniors por penales en los dieciseisavos de la Copa Argentina, con Christian Limousin atajando dos remates." },
+];
+
+const TIMELINE = [
+  { year: "1911", title: "Fundación", text: "El 6 de enero, un grupo de jóvenes del barrio porteño de Almagro funda el club tras la fusión de los equipos Jubile, San Martín Juniors y Lezica." },
+  { year: "1916", title: "Nace el Tricolor", text: "El 16 de octubre se reconstituye definitivamente el Club Almagro y se adoptan los colores azul, blanco y negro, dando origen a su apodo." },
+  { year: "1937–38", title: "Primer ascenso a Primera", text: "Almagro gana el ascenso en 1937 y debuta en Primera División en 1938, con su primer triunfo por 4-1 ante Ferro Carril Oeste. Terminó penúltimo y descendió esa misma temporada." },
+  { year: "1956", title: "Estadio propio", text: "El 7 de abril se inaugura el Estadio Tres de Febrero en José Ingenieros, la cancha que el club sigue usando hasta hoy." },
+  { year: "1999–2004", title: "Los ascensos del profesionalismo", text: "Almagro vuelve a Primera División en la temporada 1999/00 (tras 63 años) y otra vez en 2003/04, aunque en ambos casos descendió luego de una sola temporada." },
+  { year: "2019", title: "La hazaña ante Boca", text: "En la Copa Argentina, Almagro elimina a Boca Juniors por penales en los dieciseisavos de final, con el arquero Christian Limousin como figura." },
+  { year: "Hoy", title: "Primera Nacional", text: "El equipo compite en la segunda división del fútbol argentino, en la Zona B del torneo." },
+];
+
+// Apodos de rivales de la Primera Nacional (Zona B, donde juega Almagro, más
+// el clásico rival Estudiantes) y su origen, verificados. Por nombre normalizado.
+const APODOS_RIVALES = {
+  'estudiantes': { apodo: 'El Pincha', origen: 'Clásico rival de Almagro: ambos comparten el Partido de Tres de Febrero.' },
+  'atlanta': { apodo: 'El Bohemio', origen: 'Por las varias mudanzas del club antes de asentarse en Villa Crespo en 1922.' },
+  'quilmes': { apodo: 'El Cervecero', origen: 'Por la cervecería Quilmes, fundada en la misma ciudad pocos años después del club.' },
+  'chacarita': { apodo: 'El Funebrero', origen: 'Porque en sus inicios muchos socios eran empleados del cercano cementerio de la Chacarita; hasta el negro de la camiseta viene de ahí.' },
+  'chacarita juniors': { apodo: 'El Funebrero', origen: 'Porque en sus inicios muchos socios eran empleados del cercano cementerio de la Chacarita; hasta el negro de la camiseta viene de ahí.' },
+  'nueva chicago': { apodo: 'El Torito', origen: 'Apodo tradicional del club del barrio de Mataderos.' },
+  'temperley': { apodo: 'El Celeste', origen: 'Por el color de su camiseta.' },
+  'tristan suarez': { apodo: 'El Lechero', origen: 'Por la actividad tambera de la zona de Tristán Suárez a principios del siglo XX.' },
+  'gimnasia y esgrima jujuy': { apodo: 'El Lobo', origen: 'Apodo tradicional del club jujeño.' },
+  'gimnasia jujuy': { apodo: 'El Lobo', origen: 'Apodo tradicional del club jujeño.' },
+  'gimnasia y tiro': { apodo: 'El Expreso', origen: 'Apodo tradicional del club salteño.' },
+  'patronato': { apodo: 'El Santo / El Patrón', origen: 'Por su nombre completo, "Patronato de la Juventud Católica".' },
+  'guemes': { apodo: 'El Gaucho', origen: 'En honor al general Martín Miguel de Güemes, prócer santiagueño-salteño que da nombre al club.' },
+  'deportivo maipu': { apodo: 'El Trapiche', origen: 'Por la tradición azucarera y vitivinícola de Maipú, Mendoza.' },
+  'maipu': { apodo: 'El Trapiche', origen: 'Por la tradición azucarera y vitivinícola de Maipú, Mendoza.' },
+  'deportivo moron': { apodo: 'El Gallo', origen: 'Apodo tradicional del club, ligado a su escudo e identidad histórica.' },
+  'moron': { apodo: 'El Gallo', origen: 'Apodo tradicional del club, ligado a su escudo e identidad histórica.' },
+};
+
+const CREST_MAP = {
+  'almagro': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg',
+  'estudiantes': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Atl%C3%A9tico%20Estudiantes%20de%20Buenos%20Aires.svg',
+  'atlanta': 'https://commons.wikimedia.org/wiki/Special:FilePath/Club-Atletico-Atlanta.png',
+  'quilmes': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20de%20Quilmes%20Atl%C3%A9tico%20Club.svg',
+  'chacarita': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Atl%C3%A9tico%20Chacarita%20Juniors.svg',
+  'chacarita juniors': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Atl%C3%A9tico%20Chacarita%20Juniors.svg',
+  'nueva chicago': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Atl%C3%A9tico%20Nueva%20Chicago.svg',
+  'temperley': 'https://commons.wikimedia.org/wiki/Special:FilePath/Club-Atl%C3%A9tico-Temperley.png',
+  'colegiales': 'https://commons.wikimedia.org/wiki/Special:FilePath/Colegiales%20arg%20logo.png',
+  'tristan suarez': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20Final%20TS%20PNG.png',
+  'agropecuario': 'https://commons.wikimedia.org/wiki/Special:FilePath/Agropec%20escudo.png',
+  'patronato': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Atl%C3%A9tico%20Patronato%20de%20la%20Juventud%20Cat%C3%B3lica.svg',
+  'midland': 'https://commons.wikimedia.org/wiki/Special:FilePath/Midland%20escudo.png',
+  'deportivo maipu': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Deportivo%20Maipu.svg',
+  'maipu': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Deportivo%20Maipu.svg',
+  'guemes': 'https://commons.wikimedia.org/wiki/Special:FilePath/Logo%20Club%20Atletico%20G%C3%BCemes%20de%20Santiago%20del%20Estero.svg',
+  'gimnasia y esgrima jujuy': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Gimnasia%20y%20Esgrima%20Jujuy.svg',
+  'gimnasia jujuy': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Gimnasia%20y%20Esgrima%20Jujuy.svg',
+  'gimnasia y tiro': 'https://es.wikipedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20Gimnasia%20y%20Tiro%20de%20Salta.svg',
+  'atletico de rafaela': 'https://commons.wikimedia.org/wiki/Special:FilePath/Logotipo_Oficial_y_Escudo_del_Club_Atl%C3%A9tico_de_Rafaela.svg',
+  'san martin tucuman': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo%20del%20Club%20San%20Martin%20de%20Tucum%C3%A1n.svg',
+  'san martin sj': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_de_San_Martin_de_San_Juan.svg',
+  'san martin san juan': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_de_San_Martin_de_San_Juan.svg',
+  'deportivo moron': 'https://commons.wikimedia.org/wiki/Special:FilePath/Club%20Deportivo%20Moron%20Escudo%20de%201962.png',
+  'moron': 'https://commons.wikimedia.org/wiki/Special:FilePath/Club%20Deportivo%20Moron%20Escudo%20de%201962.png',
+  'ferro carril oeste': 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Ferro_Carril_Oeste.svg',
+};
+
+function iniciales(nombre){
+  return (nombre || '').split(/\s+/).filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase();
+}
+
+// Busca el escudo de un rival: primero por coincidencia exacta de nombre
+// normalizado, y si no, probando si alguna clave conocida está contenida en
+// el nombre (por si Promiedos lo escribe distinto).
+function buscarEscudo(nombre){
+  const n = normalizar(nombre);
+  if (CREST_MAP[n]) return CREST_MAP[n];
+  const key = Object.keys(CREST_MAP).find(k => n.includes(k) || k.includes(n));
+  return key ? CREST_MAP[key] : null;
+}
+
+// Devuelve el HTML de un escudo (imagen real si la tenemos, si no un círculo
+// con las iniciales del equipo) para mostrar junto al nombre de un rival.
+function escudoHtml(nombre, size){
+  const url = buscarEscudo(nombre);
+  if (url) {
+    return `<img src="${url}" alt="Escudo de ${nombre}" style="width:${size}px; height:${size}px; object-fit:contain;" loading="lazy">`;
+  }
+  return `<div style="width:${size}px; height:${size}px; border-radius:50%; background:var(--azul-deep); border:1px solid var(--azul-tricolor); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace; font-size:${Math.round(size * 0.38)}px; color:var(--azul-bright); flex-shrink:0;">${iniciales(nombre)}</div>`;
+}
+
+const NICKNAMES = ["Tricolor", "La Banda Tricolor"];
+
+// Preguntas de trivia, armadas con los mismos datos de TIMELINE/EFEMERIDES/
+// HISTORIC_SQUADS que ya usamos en el resto de la app.
+const TRIVIA = [
+  { pregunta: "¿En qué año se fundó Club Almagro?", opciones: ["1901", "1911", "1919", "1927"], correcta: 1 },
+  { pregunta: "¿Qué tres clubes se fusionaron para fundar Almagro?", opciones: ["Jubile, San Martín Juniors y Lezica", "River, Racing y San Lorenzo", "Colombian, Liberal y Español", "Platense, Tigre y Porteño"], correcta: 0 },
+  { pregunta: "¿En qué año se adoptaron los colores azul, blanco y negro?", opciones: ["1911", "1913", "1916", "1927"], correcta: 2 },
+  { pregunta: "¿Cómo se llama el estadio de Almagro?", opciones: ["Tres de Febrero", "José Amalfitani", "Ciudad de La Plata", "Islas Malvinas"], correcta: 0 },
+  { pregunta: "¿En qué año se inauguró el Estadio Tres de Febrero?", opciones: ["1937", "1949", "1956", "1968"], correcta: 2 },
+  { pregunta: "¿Cuál es el clásico rival de Almagro?", opciones: ["Chacarita Juniors", "Estudiantes (Tres de Febrero)", "Nueva Chicago", "Deportivo Morón"], correcta: 1 },
+  { pregunta: "¿A quién eliminó Almagro por penales en la Copa Argentina 2019?", opciones: ["River Plate", "Independiente", "Boca Juniors", "Racing Club"], correcta: 2 },
+  { pregunta: "¿Quién fue la figura en los penales contra Boca en 2019?", opciones: ["Christian Limousin", "Marcos Díaz", "Agustín Coscia", "Juan Manuel Martínez"], correcta: 0 },
+  { pregunta: "¿Cómo se llama la hinchada de Almagro?", opciones: ["La Banda Tricolor", "La Barra del Dragón", "Los Ferroviarios", "La Banda del Parque"], correcta: 0 },
+  { pregunta: "¿Cuál es el máximo goleador histórico de Almagro?", opciones: ["Carlos Yaque", "Enrique Planisi", "Ricardo Stagi", "Julio José Armendariz"], correcta: 1 },
+  { pregunta: "¿Quién tiene más partidos jugados en la historia del club?", opciones: ["Enrique Planisi", "Carlos Yaque", "Julio José Armendariz", "Andrés Chávez"], correcta: 2 },
+  { pregunta: "¿En qué barrio de Buenos Aires está la sede social del club?", opciones: ["Caballito", "Almagro", "Flores", "Boedo"], correcta: 1 },
+  { pregunta: "¿En qué localidad está el estadio del club?", opciones: ["Caseros", "José Ingenieros", "Munro", "Sáenz Peña"], correcta: 1 },
+  { pregunta: "¿A quién le ganó Almagro en su primer triunfo en Primera División (1938)?", opciones: ["Talleres de Escalada", "Vélez Sarsfield", "Ferro Carril Oeste", "River Plate"], correcta: 2 },
+];
+
+// Jugadores destacados de distintas épocas, con datos verificados.
+const JUGADORES_DESTACADOS = [
+  { nombre: "Julio José Armendariz", periodo: "Histórico", dato: "El futbolista con más presencias en la historia del club, con 309 partidos disputados." },
+  { nombre: "Enrique Planisi", periodo: "Histórico", dato: "Segundo en presencias históricas (298) y máximo goleador de todos los tiempos del club, con 166 goles." },
+  { nombre: "Carlos Yaque", periodo: "Histórico", dato: "Segundo máximo goleador histórico del club, con 155 goles." },
+  { nombre: "Ricardo Stagi", periodo: "1938", dato: "Goleador de Almagro en su primera temporada en Primera División, con 17 goles en 27 partidos." },
+  { nombre: "Christian Limousin", periodo: "2019", dato: "Arquero surgido de las inferiores de Boca. Atajó los penales de Alexis Mac Allister y Jan Hurtado y se convirtió en el héroe de la clasificación ante su exclub en la Copa Argentina." },
+  { nombre: "Juan Manuel Martínez", periodo: "2019", dato: "Exjugador de Boca, marcó el gol del empate agónico ante el propio Boca que forzó los penales en la Copa Argentina 2019." },
+];
+
+const DTS_ACTUALES = [
+  { nombre: "Carlos Mayor", periodo: "2026 — actualidad", dato: "Dirige al plantel profesional de Almagro en la Primera Nacional 2026." },
+];
+
+const HISTORIC_SQUADS = [
+  { year:"1911", title:"El equipo fundador",
+    context:"Entre los fundadores del club surgido de la fusión de Jubile, San Martín Juniors y Lezica estuvieron:",
+    lines:[
+      {label:"Fundadores", players:"Miguel Ortiz de Zárate, J. Tagle, Alfredo Quadrelli, Rómulo Quadrelli, C. Cerruschi, N. Sapia, J. Galmarini, J. Belliti"},
+    ]},
+  { year:"1917", title:"La campaña invicta",
+    context:"En el Campeonato de Segunda División (Zona Oeste), el equipo \"A\" de Almagro ganó los 16 partidos que disputó, con 32 goles a favor y solo 6 en contra.",
+    lines:[
+      {label:"Plantel", players:"Pedro Clerici, Ernesto Vieyro, Gerónimo Clerici, Clemente Benzi, Eduardo Cappelletti, Juan Cappelletti, Antonio Cappelletti, Miguel Ortiz de Zárate, Juan Rubbo, Juan Bianchi, Juan Del Giudice"},
+    ]},
+  { year:"1938", title:"Debut en Primera División",
+    context:"Con el ascenso conseguido en 1937, Almagro debutó en la máxima categoría del profesionalismo. Su primer triunfo llegó recién en la octava fecha, 4-1 ante Ferro Carril Oeste. Terminó penúltimo y descendió esa misma temporada.",
+    lines:[
+      {label:"Goleador del torneo", players:"Ricardo Stagi (17 goles en 27 partidos)"},
+    ]},
+  { year:"1999/00", title:"El ascenso del milenio",
+    context:"Cuarto en la Zona Metropolitana entre 18 equipos, Almagro llegó al reducido por el segundo ascenso, eliminó a Juventud Antoniana por un global de 7 a 4, y finalmente logró el ascenso a Primera vía la promoción, tras vencer a Instituto de Córdoba.",
+    lines:[
+      {label:"Figuras del ascenso", players:"Francisco Maciel (gol decisivo en la ida) y Gustavo Villalba (gol en la vuelta, en Córdoba)"},
+    ]},
+  { year:"2019", title:"La hazaña ante Boca",
+    context:"En los dieciseisavos de final de la Copa Argentina, el 13 de agosto de 2019 en el Estadio Único de La Plata, Almagro empató 1-1 con Boca Juniors (que debutaba con Daniele De Rossi) y lo eliminó por penales, 3-1.",
+    lines:[
+      {label:"Figuras del partido", players:"Christian Limousin (arquero, atajó dos penales), Juan Manuel Martínez (gol del empate), Sebastián Diana y Agustín Coscia (jugada del gol), Ezequiel Denis y Lucas Wilchez (penales convertidos)"},
+    ]},
+];
+
+const SQUAD = [
+  {name:"Emiliano González", pos:"Arq", detail:"Arquero", age:28},
+  {name:"Juan Zozaya", pos:"Arq", detail:"Arquero", age:24},
+  {name:"Francisco Marco", pos:"Def", detail:"Defensor", age:23},
+  {name:"Matías Cortave", pos:"Def", detail:"Defensor", age:34},
+  {name:"Gonzalo Asís", pos:"Def", detail:"Defensor", age:30},
+  {name:"Gino Barbieri", pos:"Def", detail:"Defensor", age:27},
+  {name:"Enzo Silcan", pos:"Def", detail:"Defensor", age:26},
+  {name:"Nicolás Tolosa", pos:"Def", detail:"Defensor", age:25},
+  {name:"Lautaro Busto", pos:"Def", detail:"Defensor", age:22},
+  {name:"Leonel Retamar", pos:"Def", detail:"Defensor", age:21},
+  {name:"Pedro Blanco", pos:"Def", detail:"Defensor", age:21},
+  {name:"Santiago Chamorro", pos:"Def", detail:"Defensor", age:24},
+  {name:"Julián Marchio", pos:"Def", detail:"Defensor", age:25},
+  {name:"Julián Vitale", pos:"Med", detail:"Mediocampista", age:30},
+  {name:"Santiago Úbeda", pos:"Med", detail:"Mediocampista", age:30},
+  {name:"Franco Bustamante", pos:"Med", detail:"Mediocampista", age:27},
+  {name:"Tobías Macies", pos:"Med", detail:"Mediocampista", age:25},
+  {name:"Joel Orlando", pos:"Med", detail:"Mediocampista", age:20},
+  {name:"Juan Fernández Pinto", pos:"Med", detail:"Mediocampista", age:21},
+  {name:"Román Sánchez", pos:"Med", detail:"Mediocampista", age:20},
+  {name:"Tobías Canale", pos:"Med", detail:"Mediocampista", age:20},
+  {name:"Uriel Villalobos", pos:"Med", detail:"Mediocampista", age:20},
+  {name:"Jeremías Bustos", pos:"Med", detail:"Mediocampista", age:22},
+  {name:"Joaquín Flores", pos:"Del", detail:"Delantero", age:21},
+  {name:"Andrés Chávez", pos:"Del", detail:"Delantero", age:35},
+  {name:"Oscar Belinetz", pos:"Del", detail:"Delantero", age:32},
+  {name:"Pablo Palacio", pos:"Del", detail:"Delantero", age:26},
+  {name:"Tiziano Dornell", pos:"Del", detail:"Delantero", age:21},
+  {name:"Mateo Benegas", pos:"Del", detail:"Delantero", age:20},
+  {name:"Thiago López", pos:"Del", detail:"Delantero", age:21},
+  {name:"Enzo Martínez", pos:"Del", detail:"Delantero", age:29},
+];
+
+const POS_LABELS = {todos:"Todos", Arq:"Arqueros", Def:"Defensores", Med:"Mediocampo", Del:"Delanteros"};
+
+// URL BASE de tu Worker de Cloudflare (ver worker.js), sin barra final.
+// Reemplazá esto por la tuya después de desplegarlo.
+const WORKER_BASE = "https://almagro-fixture1.brandaster.workers.dev";
+
+// El "score" siempre viene como "goles de Almagro - goles del rival", sin
+// importar si jugó de local o visitante.
+const RESULTS_FALLBACK = [
+  {fecha:19, date:"04/07", rival:"Atlético Rafaela", cond:"L", score:"1-0", scorers:""},
+  {fecha:18, date:"20/06", rival:"Atlanta", cond:"L", score:"2-0", scorers:""},
+  {fecha:17, date:"13/06", rival:"Agropecuario", cond:"L", score:"2-1", scorers:""},
+  {fecha:16, date:"06/06", rival:"Tristán Suárez", cond:"V", score:"0-0", scorers:""},
+  {fecha:15, date:"31/05", rival:"Güemes", cond:"L", score:"2-0", scorers:""},
+  {fecha:14, date:"24/05", rival:"Chacarita Juniors", cond:"V", score:"0-1", scorers:""},
+];
+
+let RESULTS = RESULTS_FALLBACK;
+let PROXIMOS = [];
+
+// ---------- RENDER ----------
+// ---------- UN DÍA COMO HOY ----------
+function renderEfemeride(){
+  const wrap = document.getElementById('efemeride-wrap');
+  if (!wrap) return;
+
+  const hoy = new Date();
+  const dia = hoy.getDate();
+  const mes = hoy.getMonth() + 1;
+
+  const deHoy = EFEMERIDES.filter(e => e.dia === dia && e.mes === mes);
+
+  if (deHoy.length) {
+    wrap.innerHTML = deHoy.map(e => `
+      <div class="efemeride">
+        <div class="tag mono">Un día como hoy · ${e.anio}</div>
+        <div class="texto">${e.texto}</div>
+      </div>`).join('');
+    return;
+  }
+
+  // Si no hay nada para la fecha exacta, mostramos el próximo hito que se
+  // viene (buscando por día del año, dando la vuelta si ya pasaron todos).
+  const hoyDiaAnio = diaDelAnio(dia, mes);
+  const ordenados = [...EFEMERIDES].sort((a, b) => diaDelAnio(a.dia, a.mes) - diaDelAnio(b.dia, b.mes));
+  const proxima = ordenados.find(e => diaDelAnio(e.dia, e.mes) > hoyDiaAnio) || ordenados[0];
+
+  const meses = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
+  wrap.innerHTML = `
+    <div class="efemeride proxima">
+      <div class="tag mono">Sin hitos registrados para hoy · próximo: ${proxima.dia} ${meses[proxima.mes - 1]}</div>
+      <div class="texto">${proxima.anio} — ${proxima.texto}</div>
+    </div>`;
+}
+
+function diaDelAnio(dia, mes){
+  return new Date(2001, mes - 1, dia).getTime(); // año arbitrario fijo, solo para ordenar
+}
+
+
+// ---------- TRIVIA DEL CLUB ----------
+let triviaOrden = [];
+let triviaIdx = 0;
+let triviaAciertos = 0;
+let triviaRespondidas = 0;
+
+function mezclarTrivia(){
+  triviaOrden = TRIVIA.map((_, i) => i).sort(() => Math.random() - 0.5);
+  triviaIdx = 0;
+  triviaAciertos = 0;
+  triviaRespondidas = 0;
+}
+
+function renderTrivia(){
+  const wrap = document.getElementById('trivia-wrap');
+  if (!wrap) return;
+  if (!triviaOrden.length) mezclarTrivia();
+
+  if (triviaIdx >= triviaOrden.length) {
+    wrap.innerHTML = `
+      <div class="trivia-card">
+        <div class="trivia-pregunta">¡Completaste la trivia! Acertaste ${triviaAciertos} de ${triviaOrden.length}.</div>
+        <button class="trivia-siguiente mono" id="trivia-reiniciar">Jugar de nuevo</button>
+      </div>`;
+    document.getElementById('trivia-reiniciar').addEventListener('click', () => { mezclarTrivia(); renderTrivia(); });
+    return;
+  }
+
+  const q = TRIVIA[triviaOrden[triviaIdx]];
+  const opciones = q.opciones.map((op, i) =>
+    `<button class="trivia-opcion" data-i="${i}">${op}</button>`
+  ).join('');
+
+  wrap.innerHTML = `
+    <div class="trivia-card">
+      <div class="trivia-score mono">Pregunta ${triviaIdx + 1} de ${triviaOrden.length} · Aciertos: ${triviaAciertos}</div>
+      <div class="trivia-pregunta">${q.pregunta}</div>
+      <div class="trivia-opciones">${opciones}</div>
+    </div>`;
+
+  wrap.querySelectorAll('.trivia-opcion').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const elegida = Number(btn.dataset.i);
+      wrap.querySelectorAll('.trivia-opcion').forEach(b => {
+        b.disabled = true;
+        if (Number(b.dataset.i) === q.correcta) b.classList.add('correcta');
+      });
+      if (elegida !== q.correcta) btn.classList.add('incorrecta');
+      else triviaAciertos++;
+      triviaRespondidas++;
+
+      const siguiente = document.createElement('button');
+      siguiente.className = 'trivia-siguiente mono';
+      siguiente.textContent = triviaIdx + 1 < triviaOrden.length ? 'Siguiente →' : 'Ver resultado';
+      siguiente.addEventListener('click', () => { triviaIdx++; renderTrivia(); });
+      wrap.querySelector('.trivia-card').appendChild(siguiente);
+    });
+  });
+}
+
+function renderTimeline(){
+  const el = document.getElementById('timeline');
+  el.innerHTML = TIMELINE.map((s,i) => `
+    <div class="stop${i===0?' open':''}" data-i="${i}">
+      <div class="dot"></div>
+      <button class="stopbtn">
+        <span class="yr mono">${s.year}</span>
+        <span class="ti">${s.title}</span>
+      </button>
+      <p class="body">${s.text}</p>
+    </div>`).join('');
+  el.querySelectorAll('.stop').forEach(stop => {
+    stop.querySelector('.stopbtn').addEventListener('click', () => stop.classList.toggle('open'));
+  });
+}
+
+function renderNicknames(){
+  document.getElementById('nicknames').innerHTML = NICKNAMES.map(n => `<span class="nickname mono">${n}</span>`).join('');
+}
+
+function renderDTs(){
+  const wrap = document.getElementById('dts-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = DTS_ACTUALES.map(d => `
+    <div class="destacado-card">
+      <div class="nombre">${d.nombre}</div>
+      <div class="periodo mono">${d.periodo}</div>
+      <div class="dato">${d.dato}</div>
+    </div>`).join('');
+}
+
+function renderDestacados(){
+  const wrap = document.getElementById('destacados-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = JUGADORES_DESTACADOS.map(j => `
+    <div class="destacado-card">
+      <div class="nombre">${j.nombre}</div>
+      <div class="periodo mono">${j.periodo}</div>
+      <div class="dato">${j.dato}</div>
+    </div>`).join('');
+}
+
+function renderHistoricSquads(){
+  const el = document.getElementById('historic-squads');
+  el.innerHTML = HISTORIC_SQUADS.map((sq,i) => `
+    <div class="squadcard${i===0?' open':''}" data-i="${i}">
+      <button class="squadbtn">
+        <span><span class="yr mono">${sq.year}</span><span class="ti">${sq.title}</span></span>
+        <span class="plus mono">${i===0?'–':'+'}</span>
+      </button>
+      <div class="squadbody">
+        <p>${sq.context}</p>
+        ${sq.lines.map(l => `<div style="margin-bottom:0.6rem;"><div class="line-label mono">${l.label}</div><div>${l.players}</div></div>`).join('')}
+      </div>
+    </div>`).join('');
+  el.querySelectorAll('.squadcard').forEach(card => {
+    const btn = card.querySelector('.squadbtn');
+    btn.addEventListener('click', () => {
+      card.classList.toggle('open');
+      btn.querySelector('.plus').textContent = card.classList.contains('open') ? '–' : '+';
+    });
+  });
+}
+
+// ---------- BUSCADOR DE JUGADORES POR NOMBRE ----------
+function normalizar(str){
+  return (str || '')
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // saca acentos
+    .toLowerCase()
+    .replace(/[().,]/g, ' ') // saca paréntesis y puntuación
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function buscarJugadores(query){
+  const q = normalizar(query);
+  if (!q) return [];
+  const hits = [];
+
+  HISTORIC_SQUADS.forEach(sq => {
+    sq.lines.forEach(line => {
+      line.players.split(',').forEach(nombreRaw => {
+        const nombre = nombreRaw.trim();
+        if (nombre && normalizar(nombre).includes(q)) {
+          hits.push({ nombre, contexto: `${sq.year} · ${sq.title}` });
+        }
+      });
+    });
+  });
+
+  SQUAD.forEach(p => {
+    if (normalizar(p.name).includes(q)) {
+      hits.push({ nombre: p.name, contexto: `Plantel actual · ${p.detail}` });
+    }
+  });
+
+  JUGADORES_DESTACADOS.forEach(j => {
+    if (normalizar(j.nombre).includes(q)) {
+      hits.push({ nombre: j.nombre, contexto: `Destacado · ${j.periodo}` });
+    }
+  });
+
+  return hits;
+}
+
+function renderBusquedaJugadores(query){
+  const wrap = document.getElementById('jugador-resultados');
+  const listaHistorica = document.getElementById('historic-squads');
+  const q = query.trim();
+
+  if (!q) {
+    wrap.innerHTML = '';
+    listaHistorica.style.display = '';
+    return;
+  }
+  listaHistorica.style.display = 'none';
+
+  const hits = buscarJugadores(q);
+  if (!hits.length) {
+    wrap.innerHTML = `<p class="jugador-sin mono">No se encontró ningún jugador con "${q}".</p>`;
+    return;
+  }
+  wrap.innerHTML = hits.map(h => `
+    <div class="jugador-hit">
+      <span class="nombre">${h.nombre}</span>
+      <span class="contexto">${h.contexto}</span>
+    </div>`).join('');
+}
+
+document.getElementById('jugador-search').addEventListener('input', (e) => {
+  renderBusquedaJugadores(e.target.value);
+});
+
+// ---------- BUSCADOR GLOBAL ----------
+function buscarGlobal(query){
+  const q = normalizar(query);
+  if (!q) return {};
+
+  const resultados = {};
+
+  const timelineHits = TIMELINE.filter(t => normalizar(t.year + ' ' + t.title + ' ' + t.text).includes(q))
+    .map(t => ({ titulo: `${t.year} — ${t.title}`, snippet: t.text, tab: 'historia' }));
+  if (timelineHits.length) resultados['Historia'] = timelineHits;
+
+  const efemerideHits = EFEMERIDES.filter(e => normalizar(e.anio + ' ' + e.texto).includes(q))
+    .map(e => ({ titulo: `${e.dia}/${e.mes} · ${e.anio}`, snippet: e.texto, tab: 'historia' }));
+  if (efemerideHits.length) resultados['Efemérides'] = efemerideHits;
+
+  const jugadoresHits = buscarJugadores(query)
+    .map(h => ({ titulo: h.nombre, snippet: h.contexto, tab: h.contexto.includes('actual') ? 'plantel' : 'planteles' }));
+  if (jugadoresHits.length) resultados['Jugadores'] = jugadoresHits;
+
+  const dtHits = DTS_ACTUALES.filter(d => normalizar(d.nombre + ' ' + d.dato).includes(q))
+    .map(d => ({ titulo: d.nombre, snippet: d.dato, tab: 'planteles' }));
+  if (dtHits.length) resultados['Cuerpo técnico'] = dtHits;
+
+  const apodoHits = Object.entries(APODOS_RIVALES).filter(([k, v]) => normalizar(k + ' ' + v.apodo).includes(q))
+    .map(([k, v]) => ({ titulo: v.apodo, snippet: v.origen, tab: 'resultados' }));
+  if (apodoHits.length) resultados['Rivales y apodos'] = apodoHits;
+
+  return resultados;
+}
+
+function renderBusquedaGlobal(query){
+  const wrap = document.getElementById('buscar-global-resultados');
+  const q = query.trim();
+  if (!q) { wrap.innerHTML = ''; return; }
+
+  const resultados = buscarGlobal(q);
+  const categorias = Object.keys(resultados);
+  if (!categorias.length) {
+    wrap.innerHTML = `<p class="mono" style="opacity:0.6;">No se encontró nada con "${q}".</p>`;
+    return;
+  }
+
+  wrap.innerHTML = categorias.map(cat => `
+    <div class="bg-categoria">${cat}</div>
+    ${resultados[cat].map(r => `
+      <div class="bg-hit" data-tab="${r.tab}">
+        <div class="titulo">${r.titulo}</div>
+        <div class="snippet">${r.snippet.length > 140 ? r.snippet.slice(0, 140) + '…' : r.snippet}</div>
+      </div>`).join('')}
+  `).join('');
+
+  wrap.querySelectorAll('.bg-hit').forEach(el => {
+    el.addEventListener('click', () => {
+      cerrarBusquedaGlobal();
+      const btn = document.querySelector(`.tabbtn[data-tab="${el.dataset.tab}"]`);
+      if (btn) btn.click();
+    });
+  });
+}
+
+function abrirBusquedaGlobal(){
+  document.getElementById('buscar-global-overlay').style.display = 'block';
+  document.getElementById('buscar-global-input').focus();
+}
+function cerrarBusquedaGlobal(){
+  document.getElementById('buscar-global-overlay').style.display = 'none';
+  document.getElementById('buscar-global-input').value = '';
+  document.getElementById('buscar-global-resultados').innerHTML = '';
+}
+
+document.getElementById('buscar-global-btn').addEventListener('click', abrirBusquedaGlobal);
+document.getElementById('buscar-global-cerrar').addEventListener('click', cerrarBusquedaGlobal);
+document.getElementById('buscar-global-input').addEventListener('input', (e) => renderBusquedaGlobal(e.target.value));
+document.getElementById('buscar-global-overlay').addEventListener('click', (e) => {
+  if (e.target.id === 'buscar-global-overlay') cerrarBusquedaGlobal();
+});
+
+let squadFilter = 'todos';
+function renderFilters(){
+  document.getElementById('filters').innerHTML = Object.keys(POS_LABELS).map(k =>
+    `<button class="filterbtn mono${k===squadFilter?' active':''}" data-k="${k}">${POS_LABELS[k]}</button>`).join('');
+  document.querySelectorAll('.filterbtn').forEach(b => b.addEventListener('click', () => {
+    squadFilter = b.dataset.k; renderFilters(); renderSquad();
+  }));
+}
+function renderSquad(){
+  const list = squadFilter === 'todos' ? SQUAD : SQUAD.filter(p => p.pos === squadFilter);
+  document.getElementById('squadgrid').innerHTML = list.map(p => `
+    <div class="player" style="display:flex; align-items:center; gap:0.7rem;">
+      <div style="width:40px; height:40px; border-radius:50%; background:var(--azul-deep); border:1px solid var(--azul-tricolor); display:flex; align-items:center; justify-content:center; font-family:'IBM Plex Mono', monospace; font-size:0.85rem; color:var(--azul-bright); flex-shrink:0;">${iniciales(p.name)}</div>
+      <div>
+        <div class="name">${p.name}</div>
+        <div class="detail mono">${p.detail} · ${p.age} años</div>
+      </div>
+    </div>`).join('');
+}
+
+function renderResults(){
+  document.getElementById('results').innerHTML = RESULTS.map(r => `
+    <div class="rrow">
+      <span class="date mono">${r.date}</span>
+      <span class="cond mono">${r.cond}</span>
+      <span class="rival">${r.rival}</span>
+      <span class="score mono">${r.score}</span>
+      <span class="scorers">${r.scorers}</span>
+    </div>`).join('');
+  renderRacha();
+  renderCompartir();
+}
+
+// ---------- COMPARTIR TARJETA DE RESULTADO ----------
+function renderCompartir(){
+  const wrap = document.getElementById('compartir-wrap');
+  if (!wrap) return;
+  if (!RESULTS.length) { wrap.innerHTML = ''; return; }
+  wrap.innerHTML = `
+    <button class="compartir-btn mono" id="compartir-btn">📤 Compartir último resultado</button>
+    <button class="compartir-btn mono" id="resumen-btn" style="margin-left:0.6rem;">📊 Resumen de temporada</button>`;
+  document.getElementById('compartir-btn').addEventListener('click', compartirResultado);
+  document.getElementById('resumen-btn').addEventListener('click', compartirResumenTemporada);
+}
+
+function cargarImagen(src){
+  return new Promise((resolve, reject) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => resolve(img);
+    img.onerror = reject;
+    img.src = src;
+  });
+}
+
+async function compartirResultado(){
+  const btn = document.getElementById('compartir-btn');
+  const textoOriginal = btn.textContent;
+  btn.textContent = 'Armando imagen…';
+  btn.disabled = true;
+
+  try {
+    const r = RESULTS[0];
+    const letra = resultLetter(r.score);
+    const colorResultado = { g: '#4a94e8', e: '#c9a04a', p: '#9c4a2b' }[letra] || '#4a94e8';
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 900;
+    canvas.height = 900;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#0a1220';
+    ctx.fillRect(0, 0, 900, 900);
+    ctx.strokeStyle = colorResultado;
+    ctx.lineWidth = 10;
+    ctx.strokeRect(20, 20, 860, 860);
+
+    ctx.fillStyle = '#4a94e8';
+    ctx.font = '600 28px monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText((r.cond === 'L' ? 'DE LOCAL' : 'DE VISITANTE') + ' · PRIMERA NACIONAL', 450, 100);
+
+    const almagroUrl = 'https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg';
+    const rivalUrl = buscarEscudo(r.rival);
+    try {
+      const [almagroImg, rivalImg] = await Promise.all([
+        cargarImagen(almagroUrl),
+        rivalUrl ? cargarImagen(rivalUrl) : Promise.resolve(null),
+      ]);
+      ctx.drawImage(almagroImg, 130, 160, 220, 220);
+      if (rivalImg) ctx.drawImage(rivalImg, 550, 160, 220, 220);
+    } catch {
+      // si algún escudo no carga (CORS, sin conexión, etc.), seguimos sin imagen
+    }
+
+    ctx.fillStyle = '#f1ecdd';
+    ctx.font = '900 160px sans-serif';
+    ctx.fillText(r.score, 450, 560);
+
+    ctx.font = '600 34px sans-serif';
+    ctx.fillText('ALMAGRO', 240, 630);
+    ctx.fillText(r.rival.toUpperCase(), 660, 630);
+
+    ctx.fillStyle = colorResultado;
+    ctx.font = '700 30px monospace';
+    const textoResultado = letra === 'g' ? 'VICTORIA' : letra === 'p' ? 'DERROTA' : 'EMPATE';
+    ctx.fillText(`${textoResultado} · ${r.date}`, 450, 720);
+
+    ctx.fillStyle = 'rgba(241,236,221,0.5)';
+    ctx.font = '400 22px monospace';
+    ctx.fillText('Club Almagro · José Ingenieros', 450, 820);
+
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], 'almagro-resultado.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Resultado de Almagro',
+          text: `Almagro ${r.score} ${r.rival}`,
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'almagro-resultado.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      btn.textContent = textoOriginal;
+      btn.disabled = false;
+    }, 'image/png');
+  } catch (err) {
+    console.warn('No se pudo compartir el resultado:', err);
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+  }
+}
+
+// ---------- RESUMEN DE TEMPORADA ----------
+async function obtenerAlmagroEnTabla(){
+  let fila = equiposPorZona.B.find(e => /almagro/i.test(e.equipo));
+  if (!fila) {
+    const resp = await fetch(`${WORKER_BASE}/standings?zona=B`, { cache: 'no-store' });
+    if (resp.ok) {
+      const data = await resp.json();
+      fila = (data.equipos || []).find(e => /almagro/i.test(e.equipo));
+    }
+  }
+  return fila || null;
+}
+
+// El torneo tiene 36 fechas en total (fase de zonas, ida y vuelta entre 18
+// equipos). El PJ de Almagro en la tabla nos dice en qué fecha estamos.
+const FECHAS_TOTALES = 36;
+
+async function renderFechasRestantes(){
+  const wrap = document.getElementById('fechas-restantes-wrap');
+  if (!wrap) return;
+  try {
+    const fila = await obtenerAlmagroEnTabla();
+    if (!fila || fila.jugados == null) { wrap.innerHTML = ''; return; }
+    const restantes = FECHAS_TOTALES - fila.jugados;
+    wrap.innerHTML = `
+      <div class="standing" style="margin-top:0.5rem;">
+        <span>Fechas restantes (fase de zonas)</span>
+        <span class="pos mono">${restantes} de ${FECHAS_TOTALES}</span>
+      </div>`;
+  } catch (err) {
+    console.warn('No se pudo calcular fechas restantes:', err);
+    wrap.innerHTML = '';
+  }
+}
+
+async function compartirResumenTemporada(){
+  const btn = document.getElementById('resumen-btn');
+  const textoOriginal = btn.textContent;
+  btn.textContent = 'Armando resumen…';
+  btn.disabled = true;
+
+  try {
+    const fila = await obtenerAlmagroEnTabla();
+    if (!fila) throw new Error('No se pudo obtener la posición de Almagro en la tabla');
+
+    const canvas = document.createElement('canvas');
+    canvas.width = 900;
+    canvas.height = 1000;
+    const ctx = canvas.getContext('2d');
+
+    ctx.fillStyle = '#0a1220';
+    ctx.fillRect(0, 0, 900, 1000);
+    ctx.strokeStyle = '#4a94e8';
+    ctx.lineWidth = 10;
+    ctx.strokeRect(20, 20, 860, 960);
+
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#4a94e8';
+    ctx.font = '600 26px monospace';
+    ctx.fillText('RESUMEN DE TEMPORADA · PRIMERA NACIONAL', 450, 100);
+
+    try {
+      const almagroImg = await cargarImagen('https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg');
+      ctx.drawImage(almagroImg, 350, 130, 200, 200);
+    } catch { /* seguimos sin el escudo si no carga */ }
+
+    ctx.fillStyle = '#f1ecdd';
+    ctx.font = '900 90px sans-serif';
+    ctx.fillText(`${fila.pos}°`, 450, 440);
+    ctx.font = '600 30px sans-serif';
+    ctx.fillText('EN LA ZONA B', 450, 480);
+
+    const stats = [
+      { label: 'PJ', val: fila.jugados },
+      { label: 'G', val: fila.ganados },
+      { label: 'E', val: fila.empatados },
+      { label: 'P', val: fila.perdidos },
+      { label: 'GF', val: fila.gf },
+      { label: 'GC', val: fila.gc },
+      { label: 'PTS', val: fila.pts },
+    ];
+    const startX = 130;
+    const gap = (900 - 260) / (stats.length - 1);
+    stats.forEach((s, i) => {
+      const x = startX + i * gap;
+      ctx.fillStyle = '#f1ecdd';
+      ctx.font = '700 40px monospace';
+      ctx.fillText(String(s.val), x, 580);
+      ctx.fillStyle = '#4a94e8';
+      ctx.font = '600 20px monospace';
+      ctx.fillText(s.label, x, 610);
+    });
+
+    ctx.fillStyle = '#c9a04a';
+    ctx.font = '600 24px monospace';
+    ctx.fillText('RACHA RECIENTE', 450, 690);
+
+    const ultimos = RESULTS.slice(0, 5).reverse();
+    const colores = { g: '#4a94e8', e: '#c9a04a', p: '#9c4a2b' };
+    const labels = { g: 'G', e: 'E', p: 'P' };
+    const totalW = ultimos.length * 90;
+    const startCx = 450 - totalW / 2 + 45;
+    ultimos.forEach((r, i) => {
+      const letra = resultLetter(r.score);
+      const cx = startCx + i * 90;
+      ctx.beginPath();
+      ctx.arc(cx, 750, 35, 0, Math.PI * 2);
+      ctx.fillStyle = colores[letra] || '#666';
+      ctx.fill();
+      ctx.fillStyle = letra === 'p' ? '#f1ecdd' : '#0a1220';
+      ctx.font = '700 30px sans-serif';
+      ctx.fillText(labels[letra] || '?', cx, 761);
+    });
+
+    ctx.fillStyle = 'rgba(241,236,221,0.5)';
+    ctx.font = '400 20px monospace';
+    ctx.fillText('Club Almagro · José Ingenieros', 450, 900);
+
+    canvas.toBlob(async (blob) => {
+      const file = new File([blob], 'almagro-resumen-temporada.png', { type: 'image/png' });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          files: [file],
+          title: 'Resumen de temporada de Almagro',
+          text: `Almagro está ${fila.pos}° en la Zona B con ${fila.pts} puntos`,
+        });
+      } else {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'almagro-resumen-temporada.png';
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+      btn.textContent = textoOriginal;
+      btn.disabled = false;
+    }, 'image/png');
+  } catch (err) {
+    console.warn('No se pudo armar el resumen de temporada:', err);
+    btn.textContent = textoOriginal;
+    btn.disabled = false;
+  }
+}
+
+function resultLetter(score){
+  const m = /^(\d+)\s*-\s*(\d+)$/.exec((score || '').trim());
+  if (!m) return null;
+  const [, gf, gc] = m.map(Number);
+  if (gf > gc) return 'g';
+  if (gf < gc) return 'p';
+  return 'e';
+}
+
+function renderRacha(){
+  const wrap = document.getElementById('racha-wrap');
+  if (!wrap) return;
+  const ultimos = RESULTS.slice(0, 5).reverse();
+  if (!ultimos.length) { wrap.innerHTML = ''; return; }
+
+  const labels = { g: 'G', e: 'E', p: 'P' };
+  const icons = ultimos.map(r => {
+    const letra = resultLetter(r.score);
+    if (!letra) return '';
+    return `<div class="racha-icon ${letra}" title="${r.rival}: ${r.score}">${labels[letra]}</div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="racha">
+      <div class="label mono">Racha (últimos ${ultimos.length})</div>
+      <div class="racha-icons">${icons}</div>
+    </div>`;
+  renderRachaLocalVisitante();
+}
+
+function renderRachaFila(cond, etiqueta){
+  const labels = { g: 'G', e: 'E', p: 'P' };
+  const partidos = RESULTS.filter(r => r.cond === cond).slice(0, 5).reverse();
+  if (!partidos.length) return '';
+  const icons = partidos.map(r => {
+    const letra = resultLetter(r.score);
+    if (!letra) return '';
+    return `<div class="racha-icon ${letra}" title="${r.rival}: ${r.score}">${labels[letra]}</div>`;
+  }).join('');
+  return `
+    <div class="racha">
+      <div class="label mono">${etiqueta} (últimos ${partidos.length})</div>
+      <div class="racha-icons">${icons}</div>
+    </div>`;
+}
+
+function renderRachaLocalVisitante(){
+  const wrap = document.getElementById('racha-lv-wrap');
+  if (!wrap) return;
+  const local = renderRachaFila('L', 'De local');
+  const visitante = renderRachaFila('V', 'De visitante');
+  wrap.innerHTML = local + visitante;
+}
+
+function renderProximos(){
+  const wrap = document.getElementById('proximo-wrap');
+  const heroEl = document.getElementById('countdown-hero');
+  const heroCard = document.getElementById('hero-proximo');
+  if (!PROXIMOS.length) {
+    wrap.innerHTML = `<p class="mono" style="font-size:0.8rem; opacity:0.5;">Conectá el Worker (ver README) para ver la cuenta regresiva al próximo partido.</p>`;
+    if (heroEl) heroEl.innerHTML = '';
+    if (heroCard) heroCard.innerHTML = '';
+    stopCountdown();
+    return;
+  }
+  const p = PROXIMOS[0];
+  const esLocal = p.condicion === 'L';
+  const rivalVs = esLocal ? `Almagro vs ${p.rival}` : `${p.rival} vs Almagro`;
+  const condLabel = esLocal ? 'Local · Estadio Tres de Febrero' : 'Visitante';
+  const fechaLegible = formatFechaLegible(p);
+
+  wrap.innerHTML = `
+    <div class="proximo">
+      <div class="tag mono">Próximo partido</div>
+      <div class="match">${rivalVs}</div>
+      <div class="mono" style="font-size:0.8rem; opacity:0.8; margin-top:0.2rem;">${p.dia} · ${p.dato || 'hora a confirmar'}</div>
+      <div class="countdown-box" id="countdown-detail"></div>
+      <div id="clima-wrap"></div>
+      <div id="prediccion-wrap"></div>
+    </div>`;
+
+  if (heroCard) {
+    const almagroCrest = '<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg" alt="Escudo de Almagro" style="width:36px; height:36px; object-fit:contain;">';
+    const rivalCrest = escudoHtml(p.rival, 36);
+    const [crestIzq, crestDer] = esLocal ? [almagroCrest, rivalCrest] : [rivalCrest, almagroCrest];
+    heroCard.innerHTML = `
+      <div class="tag mono">Próximo partido</div>
+      <div class="match-row">${crestIzq}<span class="match">${rivalVs}</span>${crestDer}</div>
+      <div class="cond mono">${condLabel}</div>
+      <div class="when mono">${fechaLegible}${p.dato ? ' · ' + p.dato + ' hs' : ''}</div>`;
+  }
+
+  startCountdown(p);
+  renderRivales();
+  fetchClima(p);
+  renderPrediccion(p);
+}
+
+// ---------- CLIMA DEL DÍA DEL PARTIDO ----------
+// José Ingenieros, Partido de Tres de Febrero.
+const ESTADIO_LAT = -34.606;
+const ESTADIO_LON = -58.552;
+
+function climaDesc(code){
+  if (code === 0) return { icon: '☀️', texto: 'despejado' };
+  if ([1, 2].includes(code)) return { icon: '🌤️', texto: 'poco nublado' };
+  if (code === 3) return { icon: '☁️', texto: 'nublado' };
+  if ([45, 48].includes(code)) return { icon: '🌫️', texto: 'niebla' };
+  if ([51, 53, 55, 56, 57].includes(code)) return { icon: '🌦️', texto: 'llovizna' };
+  if ([61, 63, 65, 66, 67, 80, 81, 82].includes(code)) return { icon: '🌧️', texto: 'lluvia' };
+  if ([71, 73, 75, 77, 85, 86].includes(code)) return { icon: '🌨️', texto: 'nieve' };
+  if ([95, 96, 99].includes(code)) return { icon: '⛈️', texto: 'tormenta' };
+  return { icon: '🌡️', texto: '' };
+}
+
+async function fetchClima(proximo){
+  const wrap = document.getElementById('clima-wrap');
+  if (!wrap) return;
+
+  const target = parseProximoDate(proximo);
+  if (!target) { wrap.innerHTML = ''; return; }
+
+  const hoy = new Date();
+  const diffDias = Math.round((target - hoy) / 86400000);
+  if (diffDias < 0 || diffDias > 15) { wrap.innerHTML = ''; return; }
+
+  try {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${ESTADIO_LAT}&longitude=${ESTADIO_LON}&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_probability_max&timezone=America%2FArgentina%2FBuenos_Aires&forecast_days=16`;
+    const resp = await fetch(url);
+    if (!resp.ok) throw new Error('respuesta no OK');
+    const data = await resp.json();
+
+    const fechaTarget = target.toISOString().slice(0, 10);
+    const idx = data.daily.time.indexOf(fechaTarget);
+    if (idx === -1) { wrap.innerHTML = ''; return; }
+
+    const code = data.daily.weather_code[idx];
+    const tmax = Math.round(data.daily.temperature_2m_max[idx]);
+    const tmin = Math.round(data.daily.temperature_2m_min[idx]);
+    const lluvia = data.daily.precipitation_probability_max[idx];
+    const { icon, texto } = climaDesc(code);
+
+    wrap.innerHTML = `
+      <div class="clima-box">
+        <span class="clima-icon">${icon}</span>
+        <span class="mono">${tmin}° / ${tmax}° · ${texto}${lluvia != null ? ' · ' + lluvia + '% lluvia' : ''}</span>
+      </div>`;
+  } catch (err) {
+    console.warn('No se pudo traer el clima:', err);
+    wrap.innerHTML = '';
+  }
+}
+
+// ---------- PREDICCIÓN DEL RESULTADO ----------
+const PREDICCION_KEY = 'almagro_prediccion';
+
+function partidoId(p){
+  return `${normalizar(p.rival)}|${p.dia}`;
+}
+
+function getPrediccionGuardada(){
+  try {
+    const raw = localStorage.getItem(PREDICCION_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch { return null; }
+}
+
+function guardarPrediccion(id, golAlmagro, golRival){
+  localStorage.setItem(PREDICCION_KEY, JSON.stringify({ id, golAlmagro, golRival, resuelta: false }));
+}
+
+function renderPrediccion(proximo){
+  const wrap = document.getElementById('prediccion-wrap');
+  if (!wrap) return;
+  const id = partidoId(proximo);
+  const guardada = getPrediccionGuardada();
+
+  if (guardada && guardada.id === id) {
+    wrap.innerHTML = `
+      <div class="prediccion">
+        <div class="label mono">Tu predicción</div>
+        <div class="prediccion-guardada mono">Almagro ${guardada.golAlmagro} - ${guardada.golRival} ${proximo.rival}</div>
+      </div>`;
+    return;
+  }
+
+  wrap.innerHTML = `
+    <div class="prediccion">
+      <div class="label mono">¿Cómo termina?</div>
+      <div class="prediccion-form">
+        <span class="mono">Almagro</span>
+        <input type="number" min="0" max="20" id="pred-almagro" inputmode="numeric">
+        <span>-</span>
+        <input type="number" min="0" max="20" id="pred-rival" inputmode="numeric">
+        <span class="mono">${proximo.rival}</span>
+        <button id="pred-guardar">Guardar</button>
+      </div>
+    </div>`;
+
+  document.getElementById('pred-guardar').addEventListener('click', () => {
+    const ga = document.getElementById('pred-almagro').value;
+    const gr = document.getElementById('pred-rival').value;
+    if (ga === '' || gr === '') return;
+    guardarPrediccion(id, Number(ga), Number(gr));
+    renderPrediccion(proximo);
+  });
+}
+
+function chequearPrediccion(){
+  const guardada = getPrediccionGuardada();
+  if (!guardada || guardada.resuelta) return;
+
+  const real = RESULTS.find(r => `${normalizar(r.rival)}|${r.date}` === guardada.id);
+  if (!real) return;
+
+  const m = /^(\d+)\s*-\s*(\d+)$/.exec((real.score || '').trim());
+  if (!m) return;
+  const [, gaReal, grReal] = m.map(Number);
+
+  const exacto = guardada.golAlmagro === gaReal && guardada.golRival === grReal;
+  const resultadoPredicho = guardada.golAlmagro > guardada.golRival ? 'G' : guardada.golAlmagro < guardada.golRival ? 'P' : 'E';
+  const resultadoReal = gaReal > grReal ? 'G' : gaReal < grReal ? 'P' : 'E';
+  const acertoResultado = resultadoPredicho === resultadoReal;
+
+  guardada.resuelta = true;
+  guardada.acierto = exacto ? 'exacto' : acertoResultado ? 'parcial' : 'fallo';
+  guardada.real = `${gaReal}-${grReal}`;
+  localStorage.setItem(PREDICCION_KEY, JSON.stringify(guardada));
+
+  const wrap = document.getElementById('prediccion-wrap');
+  if (!wrap) return;
+  const mensajes = {
+    exacto: '🎯 ¡Le diste justo al marcador!',
+    parcial: '👍 Acertaste el resultado, el marcador no fue exacto.',
+    fallo: '❌ Esta vez no acertaste.',
+  };
+  wrap.innerHTML = `
+    <div class="prediccion">
+      <div class="label mono">Tu predicción</div>
+      <div class="prediccion-guardada mono">Vos dijiste ${guardada.golAlmagro}-${guardada.golRival} · Terminó ${guardada.real}</div>
+      <div class="prediccion-resultado ${guardada.acierto}">${mensajes[guardada.acierto]}</div>
+    </div>`;
+}
+
+function buscarApodo(nombre){
+  const n = normalizar(nombre);
+  if (APODOS_RIVALES[n]) return APODOS_RIVALES[n];
+  const key = Object.keys(APODOS_RIVALES).find(k => n.includes(k) || k.includes(n));
+  return key ? APODOS_RIVALES[key] : null;
+}
+
+function renderRivales(){
+  const wrap = document.getElementById('rivales-wrap');
+  if (!wrap) return;
+  if (!PROXIMOS.length) { wrap.innerHTML = ''; return; }
+
+  const proximos = PROXIMOS.slice(0, 5);
+  const cards = proximos.map(p => {
+    const query = encodeURIComponent(`Almagro vs ${p.rival} historial enfrentamientos`);
+    const url = `https://www.google.com/search?q=${query}`;
+    const condLabel = p.condicion === 'L' ? 'Local' : 'Visitante';
+    const apodoInfo = buscarApodo(p.rival);
+    const apodoHtml = apodoInfo
+      ? `<div class="apodo mono" title="${apodoInfo.origen}">${apodoInfo.apodo} ℹ️</div>`
+      : '';
+    return `
+      <div class="rival-card">
+        <div class="info" style="display:flex; align-items:center; gap:0.7rem;">
+          ${escudoHtml(p.rival, 32)}
+          <div>
+            <div class="name">${p.rival}</div>
+            ${apodoHtml}
+            <div class="when mono">${p.dia}${p.dato ? ' · ' + p.dato : ''} · ${condLabel}</div>
+          </div>
+        </div>
+        <a class="rival-btn" href="${url}" target="_blank" rel="noopener noreferrer">Ver historial ↗</a>
+      </div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="rivales">
+      <div class="label mono">Próximos rivales</div>
+      ${cards}
+    </div>`;
+}
+
+function formatFechaLegible(p){
+  const date = parseProximoDate(p);
+  if (!date) return p.dia;
+  const dias = ['dom.', 'lun.', 'mar.', 'mié.', 'jue.', 'vie.', 'sáb.'];
+  const meses = ['ene.', 'feb.', 'mar.', 'abr.', 'may.', 'jun.', 'jul.', 'ago.', 'sep.', 'oct.', 'nov.', 'dic.'];
+  return `${dias[date.getDay()]} ${date.getDate()} de ${meses[date.getMonth()]}`;
+}
+
+// ---------- CUENTA REGRESIVA AL PRÓXIMO PARTIDO ----------
+let countdownInterval = null;
+let livePollInterval = null;
+let liveStatusText = null;
+
+function parseProximoDate(p){
+  const [d, m] = (p.dia || '').split('/').map(Number);
+  if (!d || !m) return null;
+  const [hh, mm] = (p.dato && /^\d{1,2}:\d{2}$/.test(p.dato)) ? p.dato.split(':').map(Number) : [12, 0];
+
+  const now = new Date();
+  let year = now.getFullYear();
+  let target = new Date(year, m - 1, d, hh, mm, 0);
+  if (target.getTime() < now.getTime() - 3 * 60 * 60 * 1000) {
+    target = new Date(year + 1, m - 1, d, hh, mm, 0);
+  }
+  return target;
+}
+
+function startCountdown(proximo){
+  stopCountdown();
+  stopLivePoll();
+  liveStatusText = null;
+  const target = parseProximoDate(proximo);
+  if (!target) return;
+
+  function tick(){
+    const diffMs = target.getTime() - Date.now();
+    const heroEl = document.getElementById('countdown-hero');
+    const detailEl = document.getElementById('countdown-detail');
+
+    if (diffMs <= 0 && diffMs > -3 * 60 * 60 * 1000) {
+      startLivePoll(proximo);
+      renderLiveStatus();
+      return;
+    }
+    if (diffMs <= 0) {
+      stopLivePoll();
+      if (heroEl) heroEl.innerHTML = '';
+      if (detailEl) detailEl.innerHTML = '';
+      stopCountdown();
+      return;
+    }
+
+    const totalSec = Math.floor(diffMs / 1000);
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+    const pad = (n) => String(n).padStart(2, '0');
+
+    if (heroEl) {
+      heroEl.innerHTML = `<span class="mono">Próximo partido en ${days}d ${pad(hours)}:${pad(mins)}:${pad(secs)}</span>`;
+    }
+    if (detailEl) {
+      detailEl.innerHTML = `
+        <div class="unit"><div class="num">${days}</div><div class="lbl mono">días</div></div>
+        <div class="unit"><div class="num">${pad(hours)}</div><div class="lbl mono">hs</div></div>
+        <div class="unit"><div class="num">${pad(mins)}</div><div class="lbl mono">min</div></div>
+        <div class="unit"><div class="num">${pad(secs)}</div><div class="lbl mono">seg</div></div>`;
+    }
+  }
+
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
+function stopCountdown(){
+  if (countdownInterval) { clearInterval(countdownInterval); countdownInterval = null; }
+}
+
+function startLivePoll(proximo){
+  if (livePollInterval) return;
+
+  const poll = async () => {
+    try {
+      const resp = await fetch(`${WORKER_BASE}/fixture`, { cache: 'no-store' });
+      if (!resp.ok) return;
+      const data = await resp.json();
+
+      const finished = (data.resultados || []).find(
+        (r) => r.rival === proximo.rival && r.dia === proximo.dia
+      );
+      if (finished) {
+        liveStatusText = `Final: ${finished.dato}`;
+        renderLiveStatus();
+        stopLivePoll();
+        return;
+      }
+
+      const stillProximo = (data.proximos || []).find(
+        (p) => p.rival === proximo.rival && p.dia === proximo.dia
+      );
+      if (stillProximo && stillProximo.dato && !/^\d{1,2}:\d{2}$/.test(stillProximo.dato)) {
+        liveStatusText = stillProximo.dato;
+      }
+      renderLiveStatus();
+    } catch (err) {
+      console.warn('No se pudo actualizar el estado en vivo:', err);
+    }
+  };
+
+  poll();
+  livePollInterval = setInterval(poll, 60000);
+}
+
+function stopLivePoll(){
+  if (livePollInterval) { clearInterval(livePollInterval); livePollInterval = null; }
+}
+
+function renderLiveStatus(){
+  const heroEl = document.getElementById('countdown-hero');
+  const detailEl = document.getElementById('countdown-detail');
+  const text = liveStatusText ? `⚽ ${liveStatusText}` : '⚽ Almagro está jugando ahora';
+  if (heroEl) heroEl.innerHTML = `<span class="mono" style="color:var(--brass);">${text}</span>`;
+  if (detailEl) detailEl.innerHTML = `<span class="mono" style="color:var(--brass);">${text}</span>`;
+}
+
+async function fetchLiveData(){
+  const fuenteEl = document.getElementById('fuente-datos');
+  try {
+    const resp = await fetch(`${WORKER_BASE}/fixture`, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('respuesta no OK');
+    const data = await resp.json();
+
+    if (data.resultados && data.resultados.length) {
+      RESULTS = data.resultados.map((r, i) => ({
+        fecha: data.resultados.length - i,
+        date: r.dia,
+        rival: r.rival,
+        cond: r.condicion,
+        score: r.dato,
+        scorers: '',
+      }));
+      renderResults();
+    }
+    if (data.proximos && data.proximos.length) {
+      PROXIMOS = data.proximos;
+      renderProximos();
+    }
+    chequearPrediccion();
+    renderFechasRestantes();
+    if (fuenteEl) {
+      const actualizado = data.actualizado ? new Date(data.actualizado).toLocaleString('es-AR') : '';
+      fuenteEl.textContent = `Datos en vivo desde Promiedos · actualizado ${actualizado}`;
+    }
+  } catch (err) {
+    console.warn('No se pudo traer el fixture en vivo, se usan los datos fijos:', err);
+  }
+  updateBadge();
+}
+
+// ---------- ÍCONO CON BADGE (resultado nuevo sin ver) ----------
+const SEEN_KEY = 'almagro_last_seen_result';
+
+function resultFingerprint(r){
+  return `${r.date}|${r.rival}|${r.score}`;
+}
+
+function updateBadge(){
+  if (!('setAppBadge' in navigator) || !RESULTS.length) return;
+  const seen = localStorage.getItem(SEEN_KEY);
+
+  if (seen === null) {
+    localStorage.setItem(SEEN_KEY, resultFingerprint(RESULTS[0]));
+    return;
+  }
+
+  let newCount = 0;
+  for (const r of RESULTS) {
+    if (resultFingerprint(r) === seen) break;
+    newCount++;
+  }
+
+  if (newCount > 0) {
+    navigator.setAppBadge(newCount).catch(() => {});
+  } else {
+    navigator.clearAppBadge().catch(() => {});
+  }
+}
+
+function markResultsAsSeen(){
+  if (!RESULTS.length) return;
+  localStorage.setItem(SEEN_KEY, resultFingerprint(RESULTS[0]));
+  if ('clearAppBadge' in navigator) navigator.clearAppBadge().catch(() => {});
+}
+
+// ---------- TABS ----------
+// ---------- TABLA COMPLETA DE AMBAS ZONAS ----------
+let standingsLoaded = false;
+
+function renderStandings(data, zona){
+  const wrap = document.getElementById(`standings-table-wrap-${zona}`);
+  if (!data || !data.equipos || !data.equipos.length) {
+    wrap.innerHTML = `
+      <div class="eyebrow mono">Zona ${zona}</div>
+      <p class="mono" style="font-size:0.8rem; opacity:0.55;">No se pudo traer la tabla en este momento. Probá de nuevo más tarde.</p>`;
+    return;
+  }
+  const rows = data.equipos.map(e => {
+    const esAlmagro = /almagro/i.test(e.equipo);
+    const escudo = esAlmagro
+      ? '<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg" alt="Escudo de Almagro" style="width:20px; height:20px; object-fit:contain;">'
+      : escudoHtml(e.equipo, 20);
+    return `
+    <tr class="${esAlmagro ? 'me' : ''}">
+      <td>${e.pos}</td>
+      <td class="team-cell">${escudo}<span>${e.equipo}</span></td>
+      <td>${e.jugados}</td>
+      <td>${e.ganados}</td>
+      <td>${e.empatados}</td>
+      <td>${e.perdidos}</td>
+      <td>${e.gf}</td>
+      <td>${e.gc}</td>
+      <td>${e.dif > 0 ? '+' + e.dif : e.dif}</td>
+      <td><strong>${e.pts}</strong></td>
+    </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="eyebrow mono">Zona ${data.grupo}</div>
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Equipo</th><th>PJ</th><th>G</th><th>E</th><th>P</th><th>GF</th><th>GC</th><th>DIF</th><th>PTS</th>
+        </tr>
+      </thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="mono" style="font-size:0.72rem; opacity:0.5; margin-top:0.8rem;">Fuente: ESPN · actualizado ${new Date(data.actualizado).toLocaleString('es-AR')} · puede estar algo atrasada respecto al último resultado</p>`;
+}
+
+const equiposPorZona = { A: [], B: [] };
+
+async function loadZona(zona){
+  const wrap = document.getElementById(`standings-table-wrap-${zona}`);
+  wrap.innerHTML = `<p class="mono" style="font-size:0.8rem; opacity:0.55;">Cargando tabla de la Zona ${zona}…</p>`;
+  try {
+    const resp = await fetch(`${WORKER_BASE}/standings?zona=${zona}`, { cache: 'no-store' });
+    if (!resp.ok) throw new Error('respuesta no OK');
+    const data = await resp.json();
+    renderStandings(data, zona);
+    equiposPorZona[zona] = data.equipos || [];
+    poblarComparador();
+  } catch (err) {
+    console.warn(`No se pudo traer la tabla de la Zona ${zona}:`, err);
+    wrap.innerHTML = `
+      <div class="eyebrow mono">Zona ${zona}</div>
+      <p class="mono" style="font-size:0.8rem; opacity:0.55;">No se pudo traer la tabla (¿desplegaste el Worker? ver README).</p>`;
+  }
+}
+
+async function loadStandings(){
+  await loadZona('B');
+  await loadZona('A');
+  standingsLoaded = true;
+}
+
+// ---------- COMPARADOR RÁPIDO ----------
+function poblarComparador(){
+  const todos = [...equiposPorZona.B, ...equiposPorZona.A];
+  if (!todos.length) return;
+  const opciones = todos
+    .map((e, i) => `<option value="${i}">${e.equipo}</option>`)
+    .join('');
+  ['comp-equipo-a', 'comp-equipo-b'].forEach(id => {
+    const select = document.getElementById(id);
+    const actual = select.value;
+    select.innerHTML = `<option value="">Elegí un equipo…</option>${opciones}`;
+    if (actual) select.value = actual;
+  });
+}
+
+function renderComparador(){
+  const wrap = document.getElementById('comparador-resultado');
+  const idxA = document.getElementById('comp-equipo-a').value;
+  const idxB = document.getElementById('comp-equipo-b').value;
+  if (idxA === '' || idxB === '') { wrap.innerHTML = ''; return; }
+
+  const todos = [...equiposPorZona.B, ...equiposPorZona.A];
+  const a = todos[Number(idxA)];
+  const b = todos[Number(idxB)];
+  if (!a || !b) { wrap.innerHTML = ''; return; }
+
+  const stats = [
+    { label: 'Posición', a: a.pos, b: b.pos, menorGana: true },
+    { label: 'PJ', a: a.jugados, b: b.jugados },
+    { label: 'Ganados', a: a.ganados, b: b.ganados },
+    { label: 'Empatados', a: a.empatados, b: b.empatados },
+    { label: 'Perdidos', a: a.perdidos, b: b.perdidos, menorGana: true },
+    { label: 'GF', a: a.gf, b: b.gf },
+    { label: 'GC', a: a.gc, b: b.gc, menorGana: true },
+    { label: 'Dif', a: a.dif, b: b.dif },
+    { label: 'Puntos', a: a.pts, b: b.pts },
+  ];
+
+  const filas = stats.map(s => {
+    const aGana = s.menorGana ? s.a < s.b : s.a > s.b;
+    const bGana = s.menorGana ? s.b < s.a : s.b > s.a;
+    return `
+      <tr>
+        <td class="stat-label">${s.label}</td>
+        <td class="${aGana ? 'better' : ''}">${s.a ?? '—'}</td>
+        <td class="${bGana ? 'better' : ''}">${s.b ?? '—'}</td>
+      </tr>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th><div class="team-header">${escudoHtml(a.equipo, 32)}<span class="name">${a.equipo}</span></div></th>
+          <th><div class="team-header">${escudoHtml(b.equipo, 32)}<span class="name">${b.equipo}</span></div></th>
+        </tr>
+      </thead>
+      <tbody>${filas}</tbody>
+    </table>`;
+}
+
+document.getElementById('comp-equipo-a').addEventListener('change', renderComparador);
+document.getElementById('comp-equipo-b').addEventListener('change', renderComparador);
+
+document.getElementById('toggle-standings').addEventListener('click', (e) => {
+  const wrap = document.getElementById('standings-wrap');
+  const isHidden = wrap.style.display === 'none';
+  wrap.style.display = isHidden ? 'block' : 'none';
+  e.target.textContent = isHidden ? 'Ocultar tabla completa ▴' : 'Ver tabla completa de la zona ▾';
+  if (isHidden && !standingsLoaded) loadStandings();
+});
+
+document.querySelectorAll('.tabbtn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tabbtn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('main section').forEach(s => s.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+    window.scrollTo({top: 0, behavior:'smooth'});
+    if (btn.dataset.tab === 'resultados') markResultsAsSeen();
+  });
+});
+
+// ---------- TEMA CLARO / OSCURO ----------
+const THEME_KEY = 'almagro_theme';
+
+function aplicarTema(tema){
+  if (tema === 'light') {
+    document.documentElement.setAttribute('data-theme', 'light');
+    document.getElementById('theme-toggle-btn').textContent = '☀️';
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    document.getElementById('theme-toggle-btn').textContent = '🌙';
+  }
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) metaTheme.setAttribute('content', tema === 'light' ? '#eef1f6' : '#0a1220');
+}
+
+function alternarTema(){
+  const actual = localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark';
+  const nuevo = actual === 'light' ? 'dark' : 'light';
+  localStorage.setItem(THEME_KEY, nuevo);
+  aplicarTema(nuevo);
+}
+
+aplicarTema(localStorage.getItem(THEME_KEY) === 'light' ? 'light' : 'dark');
+document.getElementById('theme-toggle-btn').addEventListener('click', alternarTema);
+
+// ---------- TAMAÑO DE LETRA ----------
+const FONT_KEY = 'almagro_font_scale';
+const FONT_PASOS = [87.5, 100, 112.5, 125, 137.5];
+
+function aplicarFontScale(pct){
+  document.documentElement.style.fontSize = pct + '%';
+  localStorage.setItem(FONT_KEY, String(pct));
+}
+
+function cambiarFontScale(delta){
+  const actual = Number(localStorage.getItem(FONT_KEY)) || 100;
+  const idx = FONT_PASOS.indexOf(actual);
+  const nuevoIdx = Math.min(FONT_PASOS.length - 1, Math.max(0, (idx === -1 ? 1 : idx) + delta));
+  aplicarFontScale(FONT_PASOS[nuevoIdx]);
+}
+
+aplicarFontScale(Number(localStorage.getItem(FONT_KEY)) || 100);
+document.getElementById('font-menos-btn').addEventListener('click', () => cambiarFontScale(-1));
+document.getElementById('font-mas-btn').addEventListener('click', () => cambiarFontScale(1));
+
+renderEfemeride();
+renderTrivia();
+renderTimeline();
+renderNicknames();
+renderHistoricSquads();
+renderDestacados();
+renderDTs();
+renderFilters();
+renderSquad();
+renderResults();
+renderProximos();
+fetchLiveData();
+
+// ---------- PWA: service worker + install prompt ----------
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(err => console.warn('SW registration failed', err));
+  });
+}
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('installToast').classList.add('show');
+});
+document.getElementById('installBtn').addEventListener('click', async () => {
+  document.getElementById('installToast').classList.remove('show');
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    await deferredPrompt.userChoice;
+    deferredPrompt = null;
+  }
+});
+window.addEventListener('appinstalled', () => {
+  document.getElementById('installToast').classList.remove('show');
+});
+</script>
+</body>
+</html>

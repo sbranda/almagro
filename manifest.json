@@ -1,0 +1,20 @@
+{
+  "name": "Club Almagro",
+  "short_name": "Almagro",
+  "description": "Sitio informativo no oficial del Club Almagro: historia, estadio, plantel y resultados.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0a1220",
+  "theme_color": "#0a1220",
+  "lang": "es-AR",
+  "icons": [
+    {
+      "src": "https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}
