@@ -627,6 +627,16 @@ function buscarEscudo(nombre){
 
 // Devuelve el HTML de un escudo (imagen real si la tenemos, si no un círculo
 // con las iniciales del equipo) para mostrar junto al nombre de un rival.
+// Para equipos que vienen de la tabla de posiciones (con datos de ESPN), usamos
+// el escudo real que trae la API en vez de depender del CREST_MAP a mano.
+// Solo caemos a escudoHtml() (CREST_MAP / iniciales) si ESPN no trajo logo.
+function escudoHtmlEquipo(equipoObj, size){
+  if (equipoObj && equipoObj.escudo) {
+    return `<img src="${equipoObj.escudo}" alt="Escudo de ${equipoObj.equipo}" style="width:${size}px; height:${size}px; object-fit:contain;" loading="lazy">`;
+  }
+  return escudoHtml(equipoObj ? equipoObj.equipo : '', size);
+}
+
 function escudoHtml(nombre, size){
   const url = buscarEscudo(nombre);
   if (url) {
@@ -1839,9 +1849,7 @@ function renderStandings(data, zona){
   }
   const rows = data.equipos.map(e => {
     const esAlmagro = /almagro/i.test(e.equipo);
-    const escudo = esAlmagro
-      ? '<img src="https://commons.wikimedia.org/wiki/Special:FilePath/Escudo_del_Club_Almagro.svg" alt="Escudo de Almagro" style="width:20px; height:20px; object-fit:contain;">'
-      : escudoHtml(e.equipo, 20);
+    const escudo = escudoHtmlEquipo(e, 20);
     return `
     <tr class="${esAlmagro ? 'me' : ''}">
       <td>${e.pos}</td>
@@ -1950,8 +1958,8 @@ function renderComparador(){
       <thead>
         <tr>
           <th></th>
-          <th><div class="team-header">${escudoHtml(a.equipo, 32)}<span class="name">${a.equipo}</span></div></th>
-          <th><div class="team-header">${escudoHtml(b.equipo, 32)}<span class="name">${b.equipo}</span></div></th>
+          <th><div class="team-header">${escudoHtmlEquipo(a, 32)}<span class="name">${a.equipo}</span></div></th>
+          <th><div class="team-header">${escudoHtmlEquipo(b, 32)}<span class="name">${b.equipo}</span></div></th>
         </tr>
       </thead>
       <tbody>${filas}</tbody>

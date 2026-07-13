@@ -189,10 +189,12 @@ async function fetchStandings(zona) {
   if (!wanted.length) throw new Error("No se encontraron equipos de la Zona " + zona + " en la respuesta de ESPN");
 
   const equipos = wanted.map(function (e) {
+    const logo = e.team.logos && e.team.logos.length ? e.team.logos[0].href : null;
     return {
       pos: 0, // se completa abajo, despues de ordenar
       equipoId: e.team.id,
       equipo: e.team.displayName || e.team.name || e.team.shortDisplayName,
+      escudo: logo, // URL real del escudo, provista por ESPN (a.espncdn.com)
       jugados: statVal(e, "gamesPlayed"),
       ganados: statVal(e, "wins"),
       empatados: statVal(e, "ties"),
