@@ -1,12 +1,10 @@
-// Worker de Cloudflare — scraper para la app de Club Almagro.
+// Worker de Cloudflare para la app de Club Almagro.
 //
 // Expone:
 //   GET /fixture            -> { proximos: [...], resultados: [...], actualizado: "ISO date" }
 //                               (scrapea la pagina del equipo en Promiedos)
 //   GET /standings?zona=A|B -> { grupo: "A"|"B", equipos: [...], actualizado: "ISO date" }
-//                               (scrapea la tabla de posiciones en ESPN; Almagro juega en la
-//                               Zona B de la Primera Nacional, pero se puede pedir cualquiera
-//                               de las dos para el comparador rapido)
+//                               (usa la API JSON publica de ESPN, no HTML scraping)
 //
 // Cachea cada resultado 30 minutos en el edge de Cloudflare para no golpear
 // las fuentes en cada visita, y siempre devuelve CORS abierto para que la PWA
@@ -20,9 +18,55 @@
 //  5. Pega esa URL base en index.html, en la constante WORKER_BASE
 
 const TEAM_URL = "https://www.promiedos.com.ar/team/almagro/hbag";
-const STANDINGS_URL = "https://www.espn.com.ar/futbol/posiciones/_/liga/arg.2";
+const STANDINGS_API = "https://site.api.espn.com/apis/v2/sports/soccer/arg.2/standings";
 const CACHE_TTL_SECONDS = 1800; // 30 minutos
-const EQUIPOS_POR_ZONA = 18; // cantidad de equipos en cada zona de la Primera Nacional
+
+// Mapa fijo de "id de equipo en ESPN" -> zona, tomado directamente de la tabla
+// de posiciones de la Primera Nacional 2026 (arg.2) al momento de escribir esto.
+// Usamos esto en vez de tratar de adivinar la zona a partir de texto tipo
+// "Grupo A"/"Grupo B" en la respuesta, porque esa parte del HTML es la que
+// resulto ser fragil. Si la AFA reordena las zonas en una temporada futura,
+// este mapa hay que actualizarlo a mano.
+const TEAM_ZONE = {
+  // Zona A
+  "9743": "A", // Ferro Carril Oeste
+  "10154": "A", // Deportivo Moron
+  "7": "A", // Colon (Santa Fe)
+  "21799": "A", // Ciudad de Bolivar
+  "13": "A", // Los Andes
+  "9740": "A", // Almirante Brown
+  "18260": "A", // Deportivo Madryn
+  "17352": "A", // Estudiantes (Buenos Aires)
+  "6756": "A", // Godoy Cruz Antonio Tomba
+  "10058": "A", // San Miguel
+  "10151": "A", // Defensores de Belgrano
+  "19145": "A", // Racing (Cordoba)
+  "10157": "A", // San Telmo
+  "9786": "A", // All Boys
+  "11993": "A", // Central Norte
+  "10145": "A", // Acassuso
+  "11990": "A", // Mitre (Santiago del Estero)
+  "11963": "A", // Chaco For Ever
+  // Zona B
+  "5263": "B", // Gimnasia y Esgrima (Jujuy)
+  "10146": "B", // Atlanta
+  "10163": "B", // Tristan Suarez
+  "10162": "B", // Temperley
+  "10109": "B", // Midland
+  "9747": "B", // Atletico Rafaela
+  "17814": "B", // San Martin (Tucuman)
+  "11978": "B", // Deportivo Maipu
+  "236": "B", // Nueva Chicago
+  "2": "B", // Almagro
+  "2741": "B", // Quilmes
+  "10743": "B", // Gimnasia y Tiro (Salta)
+  "10149": "B", // Colegiales
+  "7845": "B", // San Martin (San Juan)
+  "6": "B", // Chacarita Juniors
+  "10374": "B", // Patronato
+  "18284": "B", // Guemes
+  "13913": "B", // Agropecuario
+};
 
 export default {
   async fetch(request, env, ctx) {
@@ -38,7 +82,7 @@ export default {
     if (url.pathname === "/standings") {
       const zonaParam = (url.searchParams.get("zona") || "B").toUpperCase();
       const zona = zonaParam === "A" ? "A" : "B";
-      return withEdgeCache(url, request, ctx, function () { return scrapeStandings(zona); });
+      return withEdgeCache(url, request, ctx, function () { return fetchStandings(zona); });
     }
     return json({ error: "Ruta no encontrada. Usa /fixture o /standings?zona=A|B" }, 404);
   },
@@ -117,76 +161,55 @@ function extractMatchTable(html, startMarker, endMarker) {
   return parsed;
 }
 
-// ---------- TABLA DE POSICIONES (ESPN) ----------
-// La tabla de Promiedos se hidrata con JavaScript del lado del cliente, asi que
-// un fetch de servidor solo trae el esqueleto vacio. ESPN si la sirve completa
-// en el HTML inicial. La pagina lista primero el Grupo A y despues el Grupo B,
-// tanto en la lista de equipos como en los bloques de estadisticas (J, G, E, P...),
-// asi que para la Zona B hay que saltear el primer bloque de cada tipo.
+// ---------- TABLA DE POSICIONES (API JSON de ESPN) ----------
+// Usamos la API JSON no oficial de ESPN en vez de scrapear el HTML de la
+// pagina de posiciones: es mucho mas estable, porque no depende de que el
+// marcado de <table>/<td> coincida con lo que esperamos.
 
-async function scrapeStandings(zona) {
-  const res = await fetch(STANDINGS_URL, {
-    headers: { "User-Agent": "Mozilla/5.0 (compatible; AlmagroPWA/1.0)" },
+async function fetchStandings(zona) {
+  const res = await fetch(STANDINGS_API, {
+    headers: { "User-Agent": "Mozilla/5.0 (compatible; AlmagroPWA/1.0)", Accept: "application/json" },
   });
   if (!res.ok) throw new Error("ESPN respondio " + res.status);
-  const html = await res.text();
+  const data = await res.json();
 
-  const groupAStart = html.indexOf(">Grupo A<");
-  const groupBStart = html.indexOf(">Grupo B<", groupAStart === -1 ? 0 : groupAStart);
-  if (groupAStart === -1) throw new Error("No se encontro la seccion Grupo A");
-  if (groupBStart === -1) throw new Error("No se encontro la seccion Grupo B");
+  const groups = [];
+  collectStandingsGroups(data, groups);
+  if (!groups.length) throw new Error("La respuesta de ESPN no trae standings.entries");
 
-  const namesChunk = zona === "A" ? html.slice(groupAStart, groupBStart) : html.slice(groupBStart);
-
-  const teamLinkRegex = /futbol\/equipo\/_\/id\/(\d+)\/[a-z0-9\-]+"[^>]*>([^<]+)<\/a>/gi;
-  const namesById = new Map();
-  let m;
-  while ((m = teamLinkRegex.exec(namesChunk)) !== null) {
-    const id = m[1];
-    const rawText = m[2].trim();
-    const clean = rawText.replace(/^[A-Z\u00c1\u00c9\u00cd\u00d3\u00da\u00d10-9]{2,6}\s*\(/, "").replace(/\)$/, "");
-    const prev = namesById.get(id);
-    if (!prev || clean.length > prev.length) namesById.set(id, clean);
-    if (namesById.size >= EQUIPOS_POR_ZONA) break;
+  const allEntries = [];
+  for (let g = 0; g < groups.length; g++) {
+    const entries = groups[g].entries;
+    for (let i = 0; i < entries.length; i++) allEntries.push(entries[i]);
   }
-  const teamIds = Array.from(namesById.keys());
-  const teamNames = Array.from(namesById.values());
-  if (teamNames.length < 10) throw new Error("No se pudieron leer los nombres de la Zona " + zona);
 
-  const marker = "ordenar/gamesplayed";
-  const firstMarker = html.indexOf(marker);
-  if (firstMarker === -1) throw new Error("No se encontro la tabla de estadisticas");
-  const secondMarker = html.indexOf(marker, firstMarker + marker.length);
+  const wanted = allEntries.filter(function (e) {
+    return e && e.team && TEAM_ZONE[String(e.team.id)] === zona;
+  });
+  if (!wanted.length) throw new Error("No se encontraron equipos de la Zona " + zona + " en la respuesta de ESPN");
 
-  const statsStart = zona === "A" ? firstMarker : (secondMarker === -1 ? firstMarker : secondMarker);
-  const statsEnd = (zona === "A" && secondMarker !== -1) ? secondMarker : statsStart + 40000;
-  const statsChunk = html.slice(statsStart, statsEnd);
+  const equipos = wanted.map(function (e) {
+    return {
+      pos: 0, // se completa abajo, despues de ordenar
+      equipoId: e.team.id,
+      equipo: e.team.displayName || e.team.name || e.team.shortDisplayName,
+      jugados: statVal(e, "gamesPlayed"),
+      ganados: statVal(e, "wins"),
+      empatados: statVal(e, "ties"),
+      perdidos: statVal(e, "losses"),
+      gf: statVal(e, "pointsFor"),
+      gc: statVal(e, "pointsAgainst"),
+      dif: statVal(e, "pointDifferential"),
+      pts: statVal(e, "points"),
+    };
+  });
 
-  const cellRegex = /<td[^>]*>\s*([+-]?\d+)\s*<\/td>/gi;
-  const numbers = Array.from(statsChunk.matchAll(cellRegex)).map(function (c) { return c[1]; });
-
-  const equipos = [];
-  const colsPerRow = 8;
-  const rowCount = Math.min(teamNames.length, Math.floor(numbers.length / colsPerRow));
-
-  for (let i = 0; i < rowCount; i++) {
-    const slice = numbers.slice(i * colsPerRow, i * colsPerRow + colsPerRow);
-    const nums = slice.map(Number);
-    equipos.push({
-      pos: i + 1,
-      equipoId: teamIds[i],
-      equipo: teamNames[i],
-      jugados: nums[0],
-      ganados: nums[1],
-      empatados: nums[2],
-      perdidos: nums[3],
-      gf: nums[4],
-      gc: nums[5],
-      dif: nums[6],
-      pts: nums[7],
-    });
-  }
-  if (!equipos.length) throw new Error("No se pudieron cruzar nombres y estadisticas");
+  equipos.sort(function (a, b) {
+    if (b.pts !== a.pts) return b.pts - a.pts;
+    if (b.dif !== a.dif) return b.dif - a.dif;
+    return (b.gf || 0) - (a.gf || 0);
+  });
+  for (let i = 0; i < equipos.length; i++) equipos[i].pos = i + 1;
 
   return {
     grupo: zona,
@@ -195,12 +218,40 @@ async function scrapeStandings(zona) {
   };
 }
 
+function statVal(entry, name) {
+  if (!entry.stats) return null;
+  for (let i = 0; i < entry.stats.length; i++) {
+    if (entry.stats[i].name === name) return entry.stats[i].value;
+  }
+  return null;
+}
+
+// Recorre el JSON de ESPN buscando cualquier nodo con standings.entries (la
+// API a veces anida la temporada/grupo actual bajo "children"), y junta todos
+// los bloques de entries que encuentre. Despues filtramos por equipo usando
+// TEAM_ZONE, en vez de confiar en como ESPN nombre cada bloque.
+function collectStandingsGroups(node, out) {
+  if (!node || typeof node !== "object") return;
+  if (Array.isArray(node)) {
+    for (let i = 0; i < node.length; i++) collectStandingsGroups(node[i], out);
+    return;
+  }
+  if (node.standings && Array.isArray(node.standings.entries)) {
+    out.push({ name: node.name || null, entries: node.standings.entries });
+  }
+  if (Array.isArray(node.children)) {
+    for (let i = 0; i < node.children.length; i++) collectStandingsGroups(node.children[i], out);
+  }
+}
+
 // ---------- HELPERS ----------
 
 function stripTags(str) {
   return str.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
 }
 
+// Promiedos suele repetir el nombre del equipo dos veces en la misma celda
+// (ej. "Estudiantes  Estudiantes"). Esto lo colapsa a una sola aparicion.
 function dedupe(str) {
   const s = str.trim();
   const half = s.length / 2;
