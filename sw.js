@@ -5,7 +5,7 @@
 // también, pero si fallan no rompen nada (el navegador cae a una tipografía
 // de reemplazo del sistema).
 
-const CACHE_NAME = "almagro-pwa-v1";
+const CACHE_NAME = "almagro-pwa-v2";
 
 const CORE_ASSETS = [
   "./",
