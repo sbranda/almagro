@@ -269,6 +269,8 @@
 
   .visit-card{background:var(--azul-deep); border:1px solid var(--azul-tricolor); padding:1.8rem;}
   .mapa-link{display:inline-block; margin-top:0.7rem; font-size:0.8rem;}
+  .mapa-wrap{margin-top:1.2rem; border:1px solid var(--azul-tricolor); overflow:hidden;}
+  .mapa-wrap iframe{width:100%; height:260px; border:0; display:block; filter:grayscale(0.15) contrast(1.05);}
   .standings-table{width:100%; border-collapse:collapse; font-size:0.82rem;}
   .standings-table th{font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--azul-bright); text-transform:uppercase; text-align:center; padding:0.4rem 0.3rem; border-bottom:1px solid var(--line);}
   .standings-table th:first-child, .standings-table td:first-child{text-align:left; padding-left:0;}
@@ -509,6 +511,14 @@
       <p class="label mono">Cómo llegar</p>
       <p>Colectivos: 53, 135, 161, 237, 386</p>
       <p>Tren: líneas San Martín, Sarmiento y Urquiza (estaciones cercanas)</p>
+
+      <div class="mapa-wrap">
+        <iframe
+          title="Mapa del Estadio Tres de Febrero"
+          src="https://www.openstreetmap.org/export/embed.html?bbox=-58.543%2C-34.6202%2C-58.527%2C-34.6082&layer=mapnik&marker=-34.61417%2C-58.535"
+          loading="lazy">
+        </iframe>
+      </div>
       <a class="mono mapa-link" href="https://www.google.com/maps/search/?api=1&query=Estadio+Tres+de+Febrero+Almagro+Jose+Ingenieros" target="_blank" rel="noopener noreferrer">Abrir en Google Maps ↗</a>
     </div>
 
